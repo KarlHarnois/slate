@@ -1,5 +1,5 @@
 use color_eyre::Result;
-use crossterm::event::{self, Event, KeyCode, KeyEvent, KeyEventKind, KeyModifiers};
+use crossterm::event::{self, Event, KeyEvent, KeyEventKind};
 use ratatui::{
     DefaultTerminal, Frame,
     layout::{Constraint, Direction, Layout},
@@ -64,23 +64,7 @@ impl App {
     }
 
     fn on_key_event(&mut self, key: KeyEvent) {
-        match (key.modifiers, key.code) {
-            (_, KeyCode::Esc | KeyCode::Char('q'))
-            | (KeyModifiers::CONTROL, KeyCode::Char('c') | KeyCode::Char('C')) => self.quit(),
-            (KeyModifiers::NONE, KeyCode::Tab)
-            | (KeyModifiers::SHIFT, KeyCode::Tab)
-            | (_, KeyCode::BackTab) => {
-                self.dispatch(actions::FocusNextTable {});
-            }
-            _ => {}
-        }
-    }
-
-    fn quit(&mut self) {
-        self.state.is_running = false;
-    }
-
-    fn dispatch<A: actions::Action>(&mut self, action: A) {
+        let action = actions::HandleKeyEvent { key: key };
         self.state.apply(action);
     }
 }

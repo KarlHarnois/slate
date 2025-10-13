@@ -21,10 +21,6 @@ impl AppState {
         }
     }
 
-    pub fn get_project(&self) -> &[Project] {
-        &self.projects
-    }
-
     pub fn apply<A: Action>(&mut self, action: A) {
         action.apply(self);
     }
