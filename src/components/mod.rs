@@ -1,3 +1,3 @@
 pub mod table;
 
-pub use table::{Table, TableState};
+pub use table::Table;

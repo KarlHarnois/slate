@@ -1,27 +1,10 @@
+use crate::state::TableState;
 use ratatui::{
     layout::Constraint,
     style::{Color, Style, Stylize},
     widgets,
     widgets::{Block, BorderType, Borders, Cell, Padding, Row},
 };
-
-pub struct TableState {
-    pub title: String,
-    pub header: Vec<String>,
-    pub rows: Vec<Vec<String>>,
-    pub focused: bool,
-}
-
-impl TableState {
-    pub fn new() -> Self {
-        Self {
-            title: String::new(),
-            header: Vec::new(),
-            rows: Vec::new(),
-            focused: false,
-        }
-    }
-}
 
 pub struct Table {}
 

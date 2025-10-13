@@ -2,8 +2,8 @@ use color_eyre::Result;
 use crossterm::event::{self, Event, KeyCode, KeyEvent, KeyEventKind, KeyModifiers};
 use ratatui::{DefaultTerminal, Frame};
 
-use crate::components::{Table, TableState};
-use crate::models::AppState;
+use crate::components::{Table};
+use crate::state::{AppState, TableState};
 use crate::task_repository::{TaskFileRepository, TaskRepository};
 
 #[derive(Debug)]
