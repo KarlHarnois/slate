@@ -8,7 +8,7 @@ use ratatui::{
 use crate::actions::{self, StartApp};
 use crate::components::Table;
 use crate::states::AppState;
-use crate::task_repository::{TaskFileRepository, TaskRepository};
+use crate::task_repo::{TaskFileRepository, TaskRepository};
 
 #[derive(Debug)]
 pub struct App {
@@ -42,8 +42,8 @@ impl App {
     }
 
     fn render(&mut self, frame: &mut Frame) {
-        let projects_table = Table::new(&self.state.projects_table);
-        let tasks_table = Table::new(&self.state.tasks_table);
+        let projects_table = Table::build(&self.state.projects_table);
+        let tasks_table = Table::build(&self.state.tasks_table);
 
         let chunks = Layout::default()
             .direction(Direction::Vertical)

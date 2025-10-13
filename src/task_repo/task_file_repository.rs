@@ -1,5 +1,5 @@
 use crate::models::{ProgressStatus, Project, Subproject, Task};
-use crate::task_repository::{TaskRepository, TaskRepositoryError};
+use crate::task_repo::{TaskRepository, TaskRepositoryError};
 use regex::Regex;
 use std::{
     fs,
@@ -63,10 +63,7 @@ impl TaskFileRepository {
                     _ => ProgressStatus::Pending,
                 };
 
-                let task = Task {
-                    name,
-                    status,
-                };
+                let task = Task { name, status };
 
                 if project.subprojects.is_empty() {
                     project.tasks.push(task);

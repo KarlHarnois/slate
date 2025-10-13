@@ -1,5 +1,5 @@
 use crate::models::Project;
-use crate::task_repository::TaskRepositoryError;
+use crate::task_repo::TaskRepositoryError;
 use std::fmt::Debug;
 
 pub trait TaskRepository: Debug {
