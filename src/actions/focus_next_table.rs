@@ -11,4 +11,3 @@ impl Action for FocusNextTable {
         state.tasks_table.is_focused = tasks_should_focus;
     }
 }
-

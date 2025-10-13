@@ -78,6 +78,10 @@ impl App {
         self.state.is_running = false;
     }
 
+    fn dispatch_factory<A: actions::ActionFactory>(&mut self, factory: A) {
+        self.state.apply_factory(factory);
+    }
+
     fn dispatch<A: actions::Action>(&mut self, action: A) {
         self.state.apply(action);
     }
