@@ -7,9 +7,12 @@ use ratatui::{
     widgets::{Block, Paragraph},
 };
 
+use crate::models::Project;
+
 #[derive(Debug, Default)]
 pub struct App {
     running: bool,
+    pub projects: Vec<Project>,
 }
 
 impl App {
@@ -31,13 +34,16 @@ impl App {
             .bold()
             .blue()
             .centered();
+
         let text = "Hello, Ratatui!\n\n\
             Created using https://github.com/ratatui/templates\n\
             Press `Esc`, `Ctrl-C` or `q` to stop running.";
+
         frame.render_widget(
             Paragraph::new(text)
                 .block(Block::bordered().title(title))
                 .centered(),
+
             frame.area(),
         )
     }
