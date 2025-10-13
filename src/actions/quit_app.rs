@@ -1,9 +1,9 @@
 use crate::actions::Action;
 use crate::states::AppState;
 
-pub struct Quit;
+pub struct QuitApp;
 
-impl Action for Quit {
+impl Action for QuitApp {
     fn apply(self: Box<Self>, state: &mut AppState) {
         state.is_running = false;
     }

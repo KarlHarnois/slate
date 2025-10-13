@@ -3,7 +3,7 @@ pub mod action_factory;
 pub mod focus_next_table;
 pub mod handle_key_event;
 pub mod noop;
-pub mod quit;
+pub mod quit_app;
 pub mod start_app;
 pub mod update_projects;
 
