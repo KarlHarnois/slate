@@ -1,4 +1,4 @@
-use crate::state::TableState;
+use crate::state::{TableState, TableType};
 use ratatui::{
     layout::Constraint,
     style::{Color, Style, Stylize},
@@ -24,16 +24,12 @@ impl Table {
 
         widgets::Table::new(
             rows,
-            vec![
-                Constraint::Percentage(60),
-                Constraint::Percentage(20),
-                Constraint::Percentage(20),
-            ],
+            Self::constraints(&state.table_type)
         )
         .header(header)
         .block(
             Block::default()
-                .title(format!(" {} ", state.title))
+                .title(format!(" {} ", state.title()))
                 .title_style(Style::default().bold())
                 .borders(Borders::ALL)
                 .border_type(BorderType::Thick)
@@ -41,5 +37,19 @@ impl Table {
                 .padding(Padding::new(1, 0, 0, 0)),
         )
         .row_highlight_style(Style::default().reversed())
+    }
+
+    fn constraints(table_type: &TableType) -> Vec<Constraint> {
+        match table_type {
+            TableType::Projects => vec![
+                Constraint::Percentage(60),
+                Constraint::Percentage(20),
+                Constraint::Percentage(20),
+            ],
+            TableType::Tasks => vec![
+                Constraint::Percentage(20),
+                Constraint::Percentage(80),
+            ],
+        }
     }
 }

@@ -1,18 +1,31 @@
 #[derive(Debug)]
+pub enum TableType {
+    Projects,
+    Tasks
+}
+
+#[derive(Debug)]
 pub struct TableState {
-    pub title: String,
+    pub table_type: TableType,
     pub header: Vec<String>,
     pub rows: Vec<Vec<String>>,
     pub focused: bool,
 }
 
 impl TableState {
-    pub fn new() -> Self {
+    pub fn new(table_type: TableType) -> Self {
         Self {
-            title: String::new(),
+            table_type: table_type,
             header: Vec::new(),
             rows: Vec::new(),
             focused: false,
+        }
+    }
+
+    pub fn title(&self) -> String {
+        match self.table_type {
+            TableType::Projects => "Projects".to_string(),
+            TableType::Tasks => "Tasks".to_string(),
         }
     }
 }

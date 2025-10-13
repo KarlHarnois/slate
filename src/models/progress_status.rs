@@ -4,3 +4,13 @@ pub enum ProgressStatus {
     Started,
     Done,
 }
+
+impl ProgressStatus {
+    pub fn label(&self) -> String {
+        match self {
+            ProgressStatus::Pending => "Pending".to_string(),
+            ProgressStatus::Started => "Started".to_string(),
+            ProgressStatus::Done => "Done".to_string(),
+        }
+    }
+}

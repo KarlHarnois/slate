@@ -1,5 +1,5 @@
 use crate::models::Project;
-use crate::state::TableState;
+use crate::state::{TableState, TableType};
 
 #[derive(Debug)]
 pub struct AppState {
@@ -16,7 +16,7 @@ impl AppState {
             projects: Vec::new(),
             running: false,
             projects_table: Self::new_project_table(),
-            tasks_table: TableState::new(),
+            tasks_table: Self::new_tasks_table(),
         }
     }
 
@@ -26,20 +26,35 @@ impl AppState {
 
     pub fn set_projects(&mut self, projects: Vec<Project>) {
         self.projects_table.rows = self.project_rows(&projects);
+
+        if let Some(project) = projects.first() {
+            self.tasks_table.rows = self.task_rows(&project);
+        }
+
         self.projects = projects;
     }
 
     fn new_project_table() -> TableState {
-        let mut project_table = TableState::new();
-        project_table.title = "Projects".to_string();
+        let mut table = TableState::new(TableType::Projects);
 
-        project_table.header = vec![
+        table.header = vec![
             "Name".to_string(),
             "Tasks".to_string(),
             "Subprojects".to_string(),
         ];
 
-        project_table
+        table
+    }
+
+    fn new_tasks_table() -> TableState {
+        let mut table = TableState::new(TableType::Tasks);
+
+        table.header = vec![
+            "Status".to_string(),
+            "Name".to_string(),
+        ];
+
+        table
     }
 
     fn project_rows(&self, projects: &[Project]) -> Vec<Vec<String>> {
@@ -52,6 +67,18 @@ impl AppState {
                     project.name.clone(),
                     tasks_count.to_string(),
                     subprojects_count.to_string(),
+                ]
+            })
+            .collect()
+    }
+
+    fn task_rows(&self, project: &Project) -> Vec<Vec<String>> {
+        project.tasks
+            .iter()
+            .map(|task| {
+                vec![
+                    task.status.label(),
+                    task.name.clone(),
                 ]
             })
             .collect()

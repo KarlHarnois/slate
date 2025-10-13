@@ -1,6 +1,6 @@
 use color_eyre::Result;
 use crossterm::event::{self, Event, KeyCode, KeyEvent, KeyEventKind, KeyModifiers};
-use ratatui::{DefaultTerminal, Frame};
+use ratatui::{DefaultTerminal, Frame, layout::{Layout, Direction, Constraint}};
 
 use crate::components::Table;
 use crate::state::AppState;
@@ -37,8 +37,19 @@ impl App {
     }
 
     fn render(&mut self, frame: &mut Frame) {
-        let table = Table::new(&self.state.projects_table);
-        frame.render_widget(table, frame.area());
+        let projects_table = Table::new(&self.state.projects_table);
+        let tasks_table = Table::new(&self.state.tasks_table);
+
+        let chunks = Layout::default()
+            .direction(Direction::Vertical)
+            .constraints([
+                Constraint::Percentage(33),
+                Constraint::Percentage(66),
+            ])
+            .split(frame.area());
+
+        frame.render_widget(projects_table, chunks[0]);
+        frame.render_widget(tasks_table, chunks[1]);
     }
 
     fn handle_crossterm_events(&mut self) -> Result<()> {
