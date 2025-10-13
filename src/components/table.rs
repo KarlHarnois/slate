@@ -10,7 +10,7 @@ use ratatui::{
 pub struct Table {}
 
 impl Table {
-    pub fn new(state: &TableState) -> widgets::Table {
+    pub fn new<'a>(state: &'a TableState) -> widgets::Table<'a> {
         widgets::Table::new(Self::rows(&state), Self::constraints(&state.table_type))
             .header(Self::header(&state))
             .block(
@@ -30,9 +30,9 @@ impl Table {
             })
     }
 
-    fn header(state: &TableState) -> Row {
+    fn header<'a>(state: &'a TableState) -> Row<'a> {
         Row::new(state.header.iter().map(|column_name| {
-            let cell = Cell::from(column_name.clone());
+            let cell = Cell::from(column_name.as_str());
             let style = Style::default();
 
             if state.is_focused {
@@ -45,7 +45,7 @@ impl Table {
         .bottom_margin(1)
     }
 
-    fn rows(state: &TableState) -> Vec<Row> {
+    fn rows<'a>(state: &'a TableState) -> Vec<Row<'a>> {
         state
             .rows
             .iter()
