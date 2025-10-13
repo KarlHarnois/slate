@@ -16,7 +16,7 @@ impl Table {
             .block(
                 Block::default()
                     .title(format!(" {} ", state.title()))
-                    .title_style(Style::default().bold())
+                    .title_style(Self::title_style(&state))
                     .borders(Borders::ALL)
                     .border_type(BorderType::Thick)
                     .border_style(Self::border_style(&state))
@@ -59,13 +59,19 @@ impl Table {
         }
     }
 
-    fn border_style(state: &TableState) -> Style {
-        let style = Style::default();
-
+    fn title_style(state: &TableState) -> Style {
         if state.is_focused {
-            style.fg(Color::Green)
+            Style::default().bold()
         } else {
-            style
+            Style::default()
+        }
+    }
+
+    fn border_style(state: &TableState) -> Style {
+        if state.is_focused {
+            Style::default().fg(Color::Green)
+        } else {
+            Style::default()
         }
     }
 }
