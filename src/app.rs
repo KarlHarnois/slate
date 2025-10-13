@@ -1,12 +1,8 @@
 use color_eyre::Result;
 use crossterm::event::{self, Event, KeyCode, KeyEvent, KeyEventKind, KeyModifiers};
-use ratatui::{
-    DefaultTerminal, Frame,
-    layout::Constraint,
-    style::{Color, Style, Stylize},
-    widgets::{Block, BorderType, Borders, Cell, Padding, Row, Table},
-};
+use ratatui::{DefaultTerminal, Frame};
 
+use crate::components::{Table, TableState};
 use crate::models::AppState;
 use crate::task_repository::{TaskFileRepository, TaskRepository};
 
@@ -39,45 +35,27 @@ impl App {
     }
 
     fn render(&mut self, frame: &mut Frame) {
-        let header = Row::new(vec![
-            Cell::from("Name").style(Style::default().fg(Color::Yellow)),
-            Cell::from("Tasks").style(Style::default().fg(Color::Yellow)),
-            Cell::from("Subprojects").style(Style::default().fg(Color::Yellow)),
-        ])
-        .style(Style::new().bold())
-        .bottom_margin(1);
+        let mut state = TableState::new();
+        state.title = "Projects".to_string();
 
-        let rows = self.state.projects.iter().map(|project| {
+        state.header = vec![
+            "Name".to_string(),
+            "Tasks".to_string(),
+            "Subprojects".to_string()
+        ];
+
+        state.rows = self.state.projects.iter().map(|project| {
             let tasks_count = project.tasks.len();
             let subprojects_count = project.subprojects.len();
-
-            Row::new(vec![
-                Cell::from(project.name.clone()),
-                Cell::from(tasks_count.to_string()),
-                Cell::from(subprojects_count.to_string()),
-            ])
-        });
-
-        let table = Table::new(
-            rows,
             vec![
-                Constraint::Percentage(60),
-                Constraint::Percentage(20),
-                Constraint::Percentage(20),
-            ],
-        )
-        .header(header)
-        .block(
-            Block::default()
-                .title(" Projects ")
-                .title_style(Style::default().bold())
-                .borders(Borders::ALL)
-                .border_type(BorderType::Thick)
-                .border_style(Style::default().fg(Color::Green))
-                .padding(Padding::new(1, 0, 0, 0)),
-        )
-        .row_highlight_style(Style::default().reversed());
+                project.name.clone(),
+                tasks_count.to_string(),
+                subprojects_count.to_string(),
+            ]
+        })
+        .collect();
 
+        let table = Table::new(state);
         frame.render_widget(table, frame.area());
     }
 

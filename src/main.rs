@@ -1,4 +1,5 @@
 mod app;
+mod components;
 mod models;
 mod task_repository;
 
