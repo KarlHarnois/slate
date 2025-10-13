@@ -8,13 +8,12 @@ use ratatui::{
     widgets::{Block, Table, Row, Cell, Borders, BorderType, Padding},
 };
 
-use crate::models::Project;
+use crate::models::AppState;
 use crate::task_repository::{TaskRepository, TaskFileRepository};
 
 #[derive(Debug)]
 pub struct App {
-    running: bool,
-    projects: Vec<Project>,
+    state: AppState,
     repository: Box<dyn TaskRepository>,
 }
 
@@ -23,17 +22,16 @@ impl App {
         let repo = TaskFileRepository::new("/home/karl/Documents/obsidian_vault/slate");
 
         Self {
-            running: false,
-            projects: Vec::new(),
+            state: AppState::new(),
             repository: Box::new(repo),
         }
     }
 
     pub fn run(mut self, mut terminal: DefaultTerminal) -> Result<()> {
-        self.projects = self.repository.fetch_projects()?;
-        self.running = true;
+        self.state.projects = self.repository.fetch_projects()?;
+        self.state.running = true;
 
-        while self.running {
+        while self.state.running {
             terminal.draw(|frame| self.render(frame))?;
             self.handle_crossterm_events()?;
         }
@@ -50,7 +48,7 @@ impl App {
             .style(Style::new().bold())
             .bottom_margin(1);
 
-        let rows = self.projects.iter().map(|project| {
+        let rows = self.state.projects.iter().map(|project| {
             let tasks_count = project.tasks.len();
             let subprojects_count = project.subprojects.len();
 
@@ -100,6 +98,6 @@ impl App {
     }
 
     fn quit(&mut self) {
-        self.running = false;
+        self.state.running = false;
     }
 }
