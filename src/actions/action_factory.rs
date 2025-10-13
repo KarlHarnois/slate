@@ -6,7 +6,7 @@ pub trait ActionFactory {
 }
 
 impl<A: ActionFactory> Action for A {
-    fn apply(&self, state: &mut AppState) {
+    fn apply(self: Box<Self>, state: &mut AppState) {
         let action = self.create();
         action.apply(state);
     }

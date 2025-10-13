@@ -30,7 +30,8 @@ impl App {
 
     pub fn run(mut self, mut terminal: DefaultTerminal) -> Result<()> {
         let projects = self.repository.fetch_projects()?;
-        self.state.set_projects(projects);
+        let action = actions::UpdateProjects { projects };
+        self.state.apply(action);
 
         self.state.is_running = true;
 

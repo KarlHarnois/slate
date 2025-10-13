@@ -4,5 +4,5 @@ use crate::states::AppState;
 pub struct NoOp;
 
 impl Action for NoOp {
-    fn apply(&self, _state: &mut AppState) {}
+    fn apply(self: Box<Self>, _state: &mut AppState) {}
 }
