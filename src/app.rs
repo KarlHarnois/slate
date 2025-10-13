@@ -26,9 +26,9 @@ impl App {
         let projects = self.repository.fetch_projects()?;
         self.state.set_projects(projects);
 
-        self.state.running = true;
+        self.state.is_running = true;
 
-        while self.state.running {
+        while self.state.is_running {
             terminal.draw(|frame| self.render(frame))?;
             self.handle_crossterm_events()?;
         }
@@ -71,6 +71,6 @@ impl App {
     }
 
     fn quit(&mut self) {
-        self.state.running = false;
+        self.state.is_running = false;
     }
 }

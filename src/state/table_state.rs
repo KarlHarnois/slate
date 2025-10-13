@@ -9,7 +9,7 @@ pub struct TableState {
     pub table_type: TableType,
     pub header: Vec<String>,
     pub rows: Vec<Vec<String>>,
-    pub focused: bool,
+    pub is_focused: bool,
 }
 
 impl TableState {
@@ -18,7 +18,7 @@ impl TableState {
             table_type: table_type,
             header: Vec::new(),
             rows: Vec::new(),
-            focused: false,
+            is_focused: false,
         }
     }
 

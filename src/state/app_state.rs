@@ -3,7 +3,7 @@ use crate::state::{TableState, TableType};
 
 #[derive(Debug)]
 pub struct AppState {
-    pub running: bool,
+    pub is_running: bool,
     pub projects_table: TableState,
     pub tasks_table: TableState,
 
@@ -14,7 +14,7 @@ impl AppState {
     pub fn new() -> Self {
         Self {
             projects: Vec::new(),
-            running: false,
+            is_running: false,
             projects_table: Self::new_project_table(),
             tasks_table: Self::new_tasks_table(),
         }
