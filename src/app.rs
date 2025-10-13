@@ -67,7 +67,7 @@ impl App {
         match (key.modifiers, key.code) {
             (_, KeyCode::Esc | KeyCode::Char('q'))
             | (KeyModifiers::CONTROL, KeyCode::Char('c') | KeyCode::Char('C')) => self.quit(),
-            (KeyModifiers::NONE, KeyCode::Tab) => {
+            (KeyModifiers::NONE, KeyCode::Tab) | (KeyModifiers::SHIFT, KeyCode::Tab) | (_, KeyCode::BackTab)=> {
                 self.dispatch(actions::FocusNextTable {});
             }
             _ => {}
