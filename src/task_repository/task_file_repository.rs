@@ -1,49 +1,12 @@
 use crate::models::{Project, Subproject, Task, ProgressStatus};
+use crate::task_repository::{TaskRepositoryError, TaskRepository};
 use regex::Regex;
+use walkdir::WalkDir;
 use std::{
-    error::Error,
-    fmt,
-    fmt::{Debug, Display, Formatter},
     fs,
     io::{BufRead, BufReader},
     path::{Path, PathBuf},
 };
-use walkdir::WalkDir;
-
-#[derive(Debug)]
-pub enum TaskRepositoryError {
-    IO(std::io::Error),
-    Other(String),
-}
-
-impl Display for TaskRepositoryError {
-    fn fmt(&self, formatter: &mut Formatter<'_>) -> fmt::Result {
-        match self {
-            TaskRepositoryError::IO(error) => write!(formatter, "IO error: {error}"),
-            TaskRepositoryError::Other(msg) => write!(formatter, "Other: {msg}"),
-        }
-    }
-}
-
-impl Error for TaskRepositoryError {
-    fn source(&self) -> Option<&(dyn Error + 'static)> {
-        match self {
-            TaskRepositoryError::IO(error) => Some(error),
-            TaskRepositoryError::Other(_) => None,
-        }
-    }
-}
-
-impl From<std::io::Error> for TaskRepositoryError {
-    fn from(error: std::io::Error) -> Self {
-        TaskRepositoryError::IO(error)
-    }
-}
-
-pub trait TaskRepository: Debug {
-    fn fetch_projects(&self) -> Result<Vec<Project>, TaskRepositoryError>;
-    // fn save_project(&self, project: Project) -> Result<Project, TaskRepositoryError>;
-}
 
 #[derive(Debug)]
 pub struct TaskFileRepository {

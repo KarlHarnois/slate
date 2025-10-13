@@ -4,7 +4,6 @@ use ratatui::{
     DefaultTerminal, Frame,
     layout::Constraint,
     style::{Color, Style, Stylize},
-    text::Line,
     widgets::{Block, BorderType, Borders, Cell, Padding, Row, Table},
 };
 
