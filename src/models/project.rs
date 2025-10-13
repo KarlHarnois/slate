@@ -5,6 +5,6 @@ use crate::models::{Task, Subproject};
 pub struct Project {
     pub name: String,
     pub file_path: PathBuf,
-    pub children: Vec<Subproject>,
+    pub subprojects: Vec<Subproject>,
     pub tasks: Vec<Task>,
 }
