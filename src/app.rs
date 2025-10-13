@@ -3,13 +3,13 @@ use crossterm::event::{self, Event, KeyCode, KeyEvent, KeyEventKind, KeyModifier
 use ratatui::{
     DefaultTerminal, Frame,
     layout::Constraint,
-    style::{Style, Stylize, Color},
+    style::{Color, Style, Stylize},
     text::Line,
-    widgets::{Block, Table, Row, Cell, Borders, BorderType, Padding},
+    widgets::{Block, BorderType, Borders, Cell, Padding, Row, Table},
 };
 
 use crate::models::AppState;
-use crate::task_repository::{TaskRepository, TaskFileRepository};
+use crate::task_repository::{TaskFileRepository, TaskRepository};
 
 #[derive(Debug)]
 pub struct App {
@@ -45,8 +45,8 @@ impl App {
             Cell::from("# Tasks").style(Style::default().fg(Color::Yellow)),
             Cell::from("# Subprojects").style(Style::default().fg(Color::Yellow)),
         ])
-            .style(Style::new().bold())
-            .bottom_margin(1);
+        .style(Style::new().bold())
+        .bottom_margin(1);
 
         let rows = self.state.projects.iter().map(|project| {
             let tasks_count = project.tasks.len();
@@ -59,22 +59,25 @@ impl App {
             ])
         });
 
-        let table = Table::new(rows, vec![
-            Constraint::Percentage(60),
-            Constraint::Percentage(20),
-            Constraint::Percentage(20),
-        ])
-            .header(header)
-            .block(
-                Block::default()
-                    .title(" Slate ")
-                    .title_style(Style::default().bold())
-                    .borders(Borders::ALL)
-                    .border_type(BorderType::Thick)
-                    .border_style(Style::default().fg(Color::Green))
-                    .padding(Padding::new(1, 0, 0, 0))
-            )
-            .row_highlight_style(Style::default().reversed());
+        let table = Table::new(
+            rows,
+            vec![
+                Constraint::Percentage(60),
+                Constraint::Percentage(20),
+                Constraint::Percentage(20),
+            ],
+        )
+        .header(header)
+        .block(
+            Block::default()
+                .title(" Slate ")
+                .title_style(Style::default().bold())
+                .borders(Borders::ALL)
+                .border_type(BorderType::Thick)
+                .border_style(Style::default().fg(Color::Green))
+                .padding(Padding::new(1, 0, 0, 0)),
+        )
+        .row_highlight_style(Style::default().reversed());
 
         frame.render_widget(table, frame.area());
     }

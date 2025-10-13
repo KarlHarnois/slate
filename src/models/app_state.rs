@@ -10,7 +10,7 @@ impl AppState {
     pub fn new() -> Self {
         Self {
             running: false,
-            projects: Vec::new()
+            projects: Vec::new(),
         }
     }
 }

@@ -1,5 +1,5 @@
-mod models;
 mod app;
+mod models;
 mod task_repository;
 
 fn main() -> color_eyre::Result<()> {

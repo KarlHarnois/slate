@@ -1,14 +1,14 @@
 use crate::models::{Project, Subproject, Task, TaskStatus};
 use regex::Regex;
-use walkdir::WalkDir;
 use std::{
-    fs,
+    error::Error,
     fmt,
     fmt::{Debug, Display, Formatter},
-    error::Error,
+    fs,
     io::{BufRead, BufReader},
-    path::{PathBuf, Path},
+    path::{Path, PathBuf},
 };
+use walkdir::WalkDir;
 
 #[derive(Debug)]
 pub enum TaskRepositoryError {
@@ -59,7 +59,8 @@ impl TaskFileRepository {
         let file = fs::File::open(path)?;
         let reader = BufReader::new(file);
 
-        let project_name = path.file_stem()
+        let project_name = path
+            .file_stem()
             .unwrap_or_default()
             .to_string_lossy()
             .into_owned();
@@ -83,7 +84,7 @@ impl TaskFileRepository {
                 project.subprojects.push(Subproject {
                     name: name,
                     subprojects: Vec::new(),
-                    tasks: Vec::new()
+                    tasks: Vec::new(),
                 });
 
                 continue;

@@ -1,5 +1,5 @@
+use crate::models::{Subproject, Task};
 use std::path::PathBuf;
-use crate::models::{Task, Subproject};
 
 #[derive(Debug, Clone)]
 pub struct Project {
