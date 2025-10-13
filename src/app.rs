@@ -3,7 +3,7 @@ use crossterm::event::{self, Event, KeyCode, KeyEvent, KeyEventKind, KeyModifier
 use ratatui::{DefaultTerminal, Frame};
 
 use crate::components::{Table};
-use crate::state::{AppState, TableState};
+use crate::state::AppState;
 use crate::task_repository::{TaskFileRepository, TaskRepository};
 
 #[derive(Debug)]
@@ -23,7 +23,9 @@ impl App {
     }
 
     pub fn run(mut self, mut terminal: DefaultTerminal) -> Result<()> {
-        self.state.projects = self.repository.fetch_projects()?;
+        let projects = self.repository.fetch_projects()?;
+        self.state.set_projects(projects);
+
         self.state.running = true;
 
         while self.state.running {
@@ -35,27 +37,7 @@ impl App {
     }
 
     fn render(&mut self, frame: &mut Frame) {
-        let mut state = TableState::new();
-        state.title = "Projects".to_string();
-
-        state.header = vec![
-            "Name".to_string(),
-            "Tasks".to_string(),
-            "Subprojects".to_string()
-        ];
-
-        state.rows = self.state.projects.iter().map(|project| {
-            let tasks_count = project.tasks.len();
-            let subprojects_count = project.subprojects.len();
-            vec![
-                project.name.clone(),
-                tasks_count.to_string(),
-                subprojects_count.to_string(),
-            ]
-        })
-        .collect();
-
-        let table = Table::new(state);
+        let table = Table::new(&self.state.projects_table);
         frame.render_widget(table, frame.area());
     }
 

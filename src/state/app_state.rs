@@ -1,24 +1,54 @@
 use crate::models::Project;
-
-#[derive(Debug)]
-pub enum FocusedBlock {
-    Projects,
-    Tasks,
-}
+use crate::state::TableState;
 
 #[derive(Debug)]
 pub struct AppState {
-    pub focused_block: FocusedBlock,
-    pub projects: Vec<Project>,
     pub running: bool,
+    pub projects_table: TableState,
+    pub tasks_table: TableState,
+
+    projects: Vec<Project>,
 }
 
 impl AppState {
     pub fn new() -> Self {
         Self {
-            focused_block: FocusedBlock::Projects,
             projects: Vec::new(),
             running: false,
+            projects_table: Self::new_project_table(),
+            tasks_table: TableState::new(),
         }
+    }
+
+    pub fn get_project(&self) -> &[Project] {
+        &self.projects
+    }
+
+    pub fn set_projects(&mut self, projects: Vec<Project>) {
+        self.projects_table.rows = projects.iter().map(|project| {
+            let tasks_count = project.tasks.len();
+            let subprojects_count = project.subprojects.len();
+            vec![
+                project.name.clone(),
+                tasks_count.to_string(),
+                subprojects_count.to_string(),
+            ]
+        })
+        .collect();
+
+        self.projects = projects;
+    }
+
+    fn new_project_table() -> TableState {
+        let mut project_table = TableState::new();
+        project_table.title = "Projects".to_string();
+
+        project_table.header = vec![
+            "Name".to_string(),
+            "Tasks".to_string(),
+            "Subprojects".to_string()
+        ];
+
+        project_table
     }
 }

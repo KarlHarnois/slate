@@ -1,3 +1,4 @@
+#[derive(Debug)]
 pub struct TableState {
     pub title: String,
     pub header: Vec<String>,
@@ -15,4 +16,3 @@ impl TableState {
         }
     }
 }
-

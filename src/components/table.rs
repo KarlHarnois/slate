@@ -9,7 +9,7 @@ use ratatui::{
 pub struct Table {}
 
 impl Table {
-    pub fn new(state: TableState) -> widgets::Table<'static> {
+    pub fn new<'a>(state: &'a TableState) -> widgets::Table<'a> {
         let header = Row::new(state.header.iter().map(|column_name| {
             Cell::from(column_name.clone())
                 .style(Style::default().fg(Color::Yellow))
