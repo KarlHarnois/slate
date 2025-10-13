@@ -5,7 +5,7 @@ use ratatui::{
     layout::{Constraint, Direction, Layout},
 };
 
-use crate::actions;
+use crate::actions::{self, StartApp};
 use crate::components::Table;
 use crate::states::AppState;
 use crate::task_repository::{TaskFileRepository, TaskRepository};
@@ -30,10 +30,8 @@ impl App {
 
     pub fn run(mut self, mut terminal: DefaultTerminal) -> Result<()> {
         let projects = self.repository.fetch_projects()?;
-        let action = actions::UpdateProjects { projects };
-        self.state.apply(action);
-
-        self.state.is_running = true;
+        self.state.apply(actions::UpdateProjects { projects });
+        self.state.apply(StartApp);
 
         while self.state.is_running {
             terminal.draw(|frame| self.render(frame))?;
