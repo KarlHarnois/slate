@@ -1,7 +1,7 @@
 mod app;
 mod components;
 mod models;
-mod state;
+mod states;
 mod task_repository;
 mod actions;
 

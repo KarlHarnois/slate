@@ -1,4 +1,4 @@
-use crate::state::AppState;
+use crate::states::AppState;
 use crate::actions::Action;
 
 pub trait ActionFactory {

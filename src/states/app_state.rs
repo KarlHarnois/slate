@@ -1,5 +1,5 @@
 use crate::models::Project;
-use crate::state::{TableState, TableType};
+use crate::states::{TableState, TableType};
 use crate::actions::Action;
 
 #[derive(Debug)]

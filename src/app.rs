@@ -7,7 +7,7 @@ use ratatui::{
 
 use crate::actions;
 use crate::components::Table;
-use crate::state::AppState;
+use crate::states::AppState;
 use crate::task_repository::{TaskFileRepository, TaskRepository};
 
 #[derive(Debug)]

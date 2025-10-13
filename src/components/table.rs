@@ -1,4 +1,4 @@
-use crate::state::{TableState, TableType};
+use crate::states::{TableState, TableType};
 
 use ratatui::{
     layout::Constraint,

@@ -1,5 +1,5 @@
 use crate::actions::Action;
-use crate::state::AppState;
+use crate::states::AppState;
 
 pub struct FocusNextTable {}
 
