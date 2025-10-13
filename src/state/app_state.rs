@@ -36,22 +36,24 @@ impl AppState {
         project_table.header = vec![
             "Name".to_string(),
             "Tasks".to_string(),
-            "Subprojects".to_string()
+            "Subprojects".to_string(),
         ];
 
         project_table
     }
 
     fn project_rows(&self, projects: &[Project]) -> Vec<Vec<String>> {
-        projects.iter().map(|project| {
-            let tasks_count = project.tasks.len();
-            let subprojects_count = project.subprojects.len();
-            vec![
-                project.name.clone(),
-                tasks_count.to_string(),
-                subprojects_count.to_string(),
-            ]
-        })
-        .collect()
+        projects
+            .iter()
+            .map(|project| {
+                let tasks_count = project.tasks.len();
+                let subprojects_count = project.subprojects.len();
+                vec![
+                    project.name.clone(),
+                    tasks_count.to_string(),
+                    subprojects_count.to_string(),
+                ]
+            })
+            .collect()
     }
 }

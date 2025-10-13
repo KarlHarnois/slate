@@ -1,12 +1,12 @@
-use crate::models::{Project, Subproject, Task, ProgressStatus};
-use crate::task_repository::{TaskRepositoryError, TaskRepository};
+use crate::models::{ProgressStatus, Project, Subproject, Task};
+use crate::task_repository::{TaskRepository, TaskRepositoryError};
 use regex::Regex;
-use walkdir::WalkDir;
 use std::{
     fs,
     io::{BufRead, BufReader},
     path::{Path, PathBuf},
 };
+use walkdir::WalkDir;
 
 #[derive(Debug)]
 pub struct TaskFileRepository {

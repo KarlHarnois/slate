@@ -1,7 +1,7 @@
 mod app;
-mod state;
 mod components;
 mod models;
+mod state;
 mod task_repository;
 
 fn main() -> color_eyre::Result<()> {

@@ -11,20 +11,16 @@ pub struct Table {}
 impl Table {
     pub fn new<'a>(state: &'a TableState) -> widgets::Table<'a> {
         let header = Row::new(state.header.iter().map(|column_name| {
-            Cell::from(column_name.clone())
-                .style(Style::default().fg(Color::Yellow))
+            Cell::from(column_name.clone()).style(Style::default().fg(Color::Yellow))
         }))
         .style(Style::new().bold())
         .bottom_margin(1);
 
-        let rows: Vec<Row> = state.rows.iter().map(|row| {
-            Row::new(
-                row.iter().map(|cell_title| {
-                    Cell::from(cell_title.clone())
-                })
-            )
-        })
-        .collect();
+        let rows: Vec<Row> = state
+            .rows
+            .iter()
+            .map(|row| Row::new(row.iter().map(|cell_title| Cell::from(cell_title.clone()))))
+            .collect();
 
         widgets::Table::new(
             rows,
