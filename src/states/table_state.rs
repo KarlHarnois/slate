@@ -10,6 +10,7 @@ pub struct TableState {
     pub header: Vec<String>,
     pub rows: Vec<Vec<String>>,
     pub is_focused: bool,
+    pub selected_row: Option<usize>,
 }
 
 impl TableState {
@@ -19,6 +20,7 @@ impl TableState {
             header: Vec::new(),
             rows: Vec::new(),
             is_focused: false,
+            selected_row: Some(0),
         }
     }
 

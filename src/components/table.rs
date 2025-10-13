@@ -10,7 +10,7 @@ use ratatui::{
 pub struct Table;
 
 impl Table {
-    pub fn build<'a>(state: &'a TableState) -> widgets::Table<'a> {
+    pub fn build_widget<'a>(state: &'a TableState) -> widgets::Table<'a> {
         widgets::Table::new(
             Self::rows(state),
             Self::constraints(&state.table_type),

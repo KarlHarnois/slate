@@ -1,14 +1,15 @@
-use color_eyre::Result;
-use crossterm::event::{self, Event, KeyEvent, KeyEventKind};
-use ratatui::{
-    DefaultTerminal, Frame,
-    layout::{Constraint, Direction, Layout},
-};
-
 use crate::actions::{self, StartApp};
 use crate::components::Table;
 use crate::states::AppState;
 use crate::task_repo::{TaskFileRepository, TaskRepository};
+use color_eyre::Result;
+use crossterm::event::{self, Event, KeyEvent, KeyEventKind};
+use ratatui::{
+    DefaultTerminal, Frame,
+    layout::{Constraint, Direction, Layout, Rect},
+    widgets,
+};
+use std::rc::Rc;
 
 #[derive(Debug)]
 pub struct App {
@@ -42,19 +43,31 @@ impl App {
     }
 
     fn render(&mut self, frame: &mut Frame) {
-        let projects_table = Table::build(&self.state.projects_table);
-        let tasks_table = Table::build(&self.state.tasks_table);
+        let chunks = self.tables_chunk(frame.area());
+        self.render_table(frame, chunks[0], &self.state.projects_table);
+        self.render_table(frame, chunks[1], &self.state.tasks_table);
+    }
 
-        let chunks = Layout::default()
+    fn tables_chunk(&self, area: Rect) -> Rc<[Rect]> {
+        Layout::default()
             .direction(Direction::Vertical)
             .constraints([
                 Constraint::Percentage(33),
                 Constraint::Percentage(66),
             ])
-            .split(frame.area());
+            .split(area)
+    }
 
-        frame.render_widget(projects_table, chunks[0]);
-        frame.render_widget(tasks_table, chunks[1]);
+    fn render_table(
+        &self,
+        frame: &mut Frame,
+        area: Rect,
+        state: &crate::states::TableState,
+    ) {
+        let table = Table::build_widget(state);
+        let mut widget_state = widgets::TableState::default();
+        widget_state.select(state.selected_row);
+        frame.render_stateful_widget(table, area, &mut widget_state);
     }
 
     fn handle_crossterm_events(&mut self) -> Result<()> {
