@@ -25,17 +25,7 @@ impl AppState {
     }
 
     pub fn set_projects(&mut self, projects: Vec<Project>) {
-        self.projects_table.rows = projects.iter().map(|project| {
-            let tasks_count = project.tasks.len();
-            let subprojects_count = project.subprojects.len();
-            vec![
-                project.name.clone(),
-                tasks_count.to_string(),
-                subprojects_count.to_string(),
-            ]
-        })
-        .collect();
-
+        self.projects_table.rows = self.project_rows(&projects);
         self.projects = projects;
     }
 
@@ -50,5 +40,18 @@ impl AppState {
         ];
 
         project_table
+    }
+
+    fn project_rows(&self, projects: &[Project]) -> Vec<Vec<String>> {
+        projects.iter().map(|project| {
+            let tasks_count = project.tasks.len();
+            let subprojects_count = project.subprojects.len();
+            vec![
+                project.name.clone(),
+                tasks_count.to_string(),
+                subprojects_count.to_string(),
+            ]
+        })
+        .collect()
     }
 }
