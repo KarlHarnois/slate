@@ -100,10 +100,16 @@ impl TaskFileRepository {
                     _ => ProgressStatus::Pending,
                 };
 
-                project.subprojects.last_mut().unwrap().tasks.push(Task {
+                let task = Task {
                     name: name,
                     status: status,
-                });
+                };
+
+                if project.subprojects.len() == 0 {
+                    project.tasks.push(task);
+                } else {
+                    project.subprojects.last_mut().unwrap().tasks.push(task);
+                }
             }
         }
 
