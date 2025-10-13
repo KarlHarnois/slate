@@ -2,6 +2,7 @@ use crate::models::{Subproject, Task};
 use std::path::PathBuf;
 
 #[derive(Debug, Clone)]
+#[allow(dead_code)]
 pub struct Project {
     pub name: String,
     pub file_path: PathBuf,
