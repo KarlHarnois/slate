@@ -15,7 +15,7 @@ pub struct TableState {
 impl TableState {
     pub fn new(table_type: TableType) -> Self {
         Self {
-            table_type: table_type,
+            table_type,
             header: Vec::new(),
             rows: Vec::new(),
             is_focused: false,

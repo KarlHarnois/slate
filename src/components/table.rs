@@ -12,17 +12,17 @@ pub struct Table {}
 impl Table {
     pub fn new<'a>(state: &'a TableState) -> widgets::Table<'a> {
         widgets::Table::new(
-            Self::rows(&state),
+            Self::rows(state),
             Self::constraints(&state.table_type),
         )
-        .header(Self::header(&state))
+        .header(Self::header(state))
         .block(
             Block::default()
                 .title(format!(" {} ", state.title()))
-                .title_style(Self::title_style(&state))
+                .title_style(Self::title_style(state))
                 .borders(Borders::ALL)
                 .border_type(BorderType::Thick)
-                .border_style(Self::border_style(&state))
+                .border_style(Self::border_style(state))
                 .padding(Padding::new(1, 0, 0, 0)),
         )
         .row_highlight_style(Style::default().reversed())

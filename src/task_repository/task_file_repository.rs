@@ -45,7 +45,7 @@ impl TaskFileRepository {
                 let name = capture.get(2).unwrap().as_str().trim().to_string();
 
                 project.subprojects.push(Subproject {
-                    name: name,
+                    name,
                     subprojects: Vec::new(),
                     tasks: Vec::new(),
                 });
@@ -64,11 +64,11 @@ impl TaskFileRepository {
                 };
 
                 let task = Task {
-                    name: name,
-                    status: status,
+                    name,
+                    status,
                 };
 
-                if project.subprojects.len() == 0 {
+                if project.subprojects.is_empty() {
                     project.tasks.push(task);
                 } else {
                     project.subprojects.last_mut().unwrap().tasks.push(task);

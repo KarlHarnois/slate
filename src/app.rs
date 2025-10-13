@@ -70,7 +70,7 @@ impl App {
     }
 
     fn on_key_event(&mut self, key: KeyEvent) {
-        let action = actions::HandleKeyEvent { key: key };
+        let action = actions::HandleKeyEvent { key };
         self.state.apply(action);
     }
 }
