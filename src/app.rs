@@ -18,7 +18,9 @@ pub struct App {
 
 impl App {
     pub fn new() -> Self {
-        let repo = TaskFileRepository::new("/home/karl/Documents/obsidian_vault/slate");
+        let repo = TaskFileRepository::new(
+            "/home/karl/Documents/obsidian_vault/slate",
+        );
 
         Self {
             state: AppState::new(),
@@ -46,7 +48,10 @@ impl App {
 
         let chunks = Layout::default()
             .direction(Direction::Vertical)
-            .constraints([Constraint::Percentage(33), Constraint::Percentage(66)])
+            .constraints([
+                Constraint::Percentage(33),
+                Constraint::Percentage(66),
+            ])
             .split(frame.area());
 
         frame.render_widget(projects_table, chunks[0]);
@@ -55,7 +60,9 @@ impl App {
 
     fn handle_crossterm_events(&mut self) -> Result<()> {
         match event::read()? {
-            Event::Key(key) if key.kind == KeyEventKind::Press => self.on_key_event(key),
+            Event::Key(key) if key.kind == KeyEventKind::Press => {
+                self.on_key_event(key)
+            }
             Event::Mouse(_) => {}
             Event::Resize(_, _) => {}
             _ => {}

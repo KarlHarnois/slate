@@ -84,10 +84,13 @@ impl TaskRepository for TaskFileRepository {
     fn fetch_projects(&self) -> Result<Vec<Project>, TaskRepositoryError> {
         let mut out = Vec::new();
 
-        for entry in WalkDir::new(&self.root).into_iter().filter_map(Result::ok) {
+        for entry in WalkDir::new(&self.root).into_iter().filter_map(Result::ok)
+        {
             let path = entry.path();
 
-            if path.is_file() && path.extension().map(|e| e == "md").unwrap_or(false) {
+            if path.is_file()
+                && path.extension().map(|e| e == "md").unwrap_or(false)
+            {
                 out.push(self.parse_file(path)?);
             }
         }

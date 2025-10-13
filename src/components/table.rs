@@ -11,23 +11,26 @@ pub struct Table {}
 
 impl Table {
     pub fn new<'a>(state: &'a TableState) -> widgets::Table<'a> {
-        widgets::Table::new(Self::rows(&state), Self::constraints(&state.table_type))
-            .header(Self::header(&state))
-            .block(
-                Block::default()
-                    .title(format!(" {} ", state.title()))
-                    .title_style(Self::title_style(&state))
-                    .borders(Borders::ALL)
-                    .border_type(BorderType::Thick)
-                    .border_style(Self::border_style(&state))
-                    .padding(Padding::new(1, 0, 0, 0)),
-            )
-            .row_highlight_style(Style::default().reversed())
-            .row_highlight_style(if state.is_focused {
-                Style::default().bg(Color::DarkGray).fg(Color::White)
-            } else {
-                Style::default()
-            })
+        widgets::Table::new(
+            Self::rows(&state),
+            Self::constraints(&state.table_type),
+        )
+        .header(Self::header(&state))
+        .block(
+            Block::default()
+                .title(format!(" {} ", state.title()))
+                .title_style(Self::title_style(&state))
+                .borders(Borders::ALL)
+                .border_type(BorderType::Thick)
+                .border_style(Self::border_style(&state))
+                .padding(Padding::new(1, 0, 0, 0)),
+        )
+        .row_highlight_style(Style::default().reversed())
+        .row_highlight_style(if state.is_focused {
+            Style::default().bg(Color::DarkGray).fg(Color::White)
+        } else {
+            Style::default()
+        })
     }
 
     fn header<'a>(state: &'a TableState) -> Row<'a> {
@@ -49,7 +52,11 @@ impl Table {
         state
             .rows
             .iter()
-            .map(|row| Row::new(row.iter().map(|cell_title| Cell::from(cell_title.clone()))))
+            .map(|row| {
+                Row::new(
+                    row.iter().map(|cell_title| Cell::from(cell_title.clone())),
+                )
+            })
             .collect()
     }
 
@@ -60,7 +67,9 @@ impl Table {
                 Constraint::Percentage(20),
                 Constraint::Percentage(20),
             ],
-            TableType::Tasks => vec![Constraint::Percentage(10), Constraint::Percentage(90)],
+            TableType::Tasks => {
+                vec![Constraint::Percentage(10), Constraint::Percentage(90)]
+            }
         }
     }
 

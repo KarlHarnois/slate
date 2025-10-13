@@ -12,7 +12,9 @@ pub enum TaskRepositoryError {
 impl Display for TaskRepositoryError {
     fn fmt(&self, formatter: &mut Formatter<'_>) -> fmt::Result {
         match self {
-            TaskRepositoryError::IO(error) => write!(formatter, "IO error: {error}"),
+            TaskRepositoryError::IO(error) => {
+                write!(formatter, "IO error: {error}")
+            }
         }
     }
 }

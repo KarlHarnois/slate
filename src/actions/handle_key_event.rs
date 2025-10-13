@@ -1,5 +1,6 @@
 use crate::actions::{
-    Action, ActionFactory, focus_next_table::FocusNextTable, noop::NoOp, quit::Quit,
+    Action, ActionFactory, focus_next_table::FocusNextTable, noop::NoOp,
+    quit::Quit,
 };
 
 use crossterm::event::{
