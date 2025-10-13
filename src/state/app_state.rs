@@ -1,5 +1,6 @@
 use crate::models::Project;
 use crate::state::{TableState, TableType};
+use crate::actions::Action;
 
 #[derive(Debug)]
 pub struct AppState {
@@ -22,6 +23,10 @@ impl AppState {
 
     pub fn get_project(&self) -> &[Project] {
         &self.projects
+    }
+
+    pub fn apply<T: Action>(&mut self, action: T) {
+        action.apply(self);
     }
 
     pub fn set_projects(&mut self, projects: Vec<Project>) {

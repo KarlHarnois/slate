@@ -5,6 +5,7 @@ use ratatui::{
     layout::{Constraint, Direction, Layout},
 };
 
+use crate::actions;
 use crate::components::Table;
 use crate::state::AppState;
 use crate::task_repository::{TaskFileRepository, TaskRepository};
@@ -55,9 +56,9 @@ impl App {
     fn handle_crossterm_events(&mut self) -> Result<()> {
         match event::read()? {
             Event::Key(key) if key.kind == KeyEventKind::Press => self.on_key_event(key),
-            Event::Mouse(_) => {}
-            Event::Resize(_, _) => {}
-            _ => {}
+            Event::Mouse(_) => {},
+            Event::Resize(_, _) => {},
+            _ => {},
         }
         Ok(())
     }
@@ -66,11 +67,18 @@ impl App {
         match (key.modifiers, key.code) {
             (_, KeyCode::Esc | KeyCode::Char('q'))
             | (KeyModifiers::CONTROL, KeyCode::Char('c') | KeyCode::Char('C')) => self.quit(),
+            (KeyModifiers::NONE, KeyCode::Tab) => {
+                self.dispatch(actions::FocusNextTable {});
+            }
             _ => {}
         }
     }
 
     fn quit(&mut self) {
         self.state.is_running = false;
+    }
+
+    fn dispatch<A: actions::Action>(&mut self, action: A) {
+        self.state.apply(action);
     }
 }
