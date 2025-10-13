@@ -1,7 +1,7 @@
 use crate::actions::Action;
 use crate::states::AppState;
 
-pub struct Quit {}
+pub struct Quit;
 
 impl Action for Quit {
     fn apply(&self, state: &mut AppState) {

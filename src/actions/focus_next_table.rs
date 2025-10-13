@@ -1,7 +1,7 @@
 use crate::actions::Action;
 use crate::states::AppState;
 
-pub struct FocusNextTable {}
+pub struct FocusNextTable;
 
 impl Action for FocusNextTable {
     fn apply(&self, state: &mut AppState) {

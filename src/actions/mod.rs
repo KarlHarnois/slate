@@ -7,7 +7,4 @@ pub mod quit;
 
 pub use action::Action;
 pub use action_factory::ActionFactory;
-pub use focus_next_table::FocusNextTable;
 pub use handle_key_event::HandleKeyEvent;
-pub use noop::NoOp;
-pub use quit::Quit;
