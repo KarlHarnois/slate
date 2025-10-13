@@ -41,9 +41,9 @@ impl App {
 
     fn render(&mut self, frame: &mut Frame) {
         let header = Row::new(vec![
-            Cell::from("Project").style(Style::default().fg(Color::Yellow)),
-            Cell::from("# Tasks").style(Style::default().fg(Color::Yellow)),
-            Cell::from("# Subprojects").style(Style::default().fg(Color::Yellow)),
+            Cell::from("Name").style(Style::default().fg(Color::Yellow)),
+            Cell::from("Tasks").style(Style::default().fg(Color::Yellow)),
+            Cell::from("Subprojects").style(Style::default().fg(Color::Yellow)),
         ])
         .style(Style::new().bold())
         .bottom_margin(1);
@@ -70,7 +70,7 @@ impl App {
         .header(header)
         .block(
             Block::default()
-                .title(" Slate ")
+                .title(" Projects ")
                 .title_style(Style::default().bold())
                 .borders(Borders::ALL)
                 .border_type(BorderType::Thick)

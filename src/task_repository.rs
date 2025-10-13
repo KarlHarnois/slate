@@ -1,4 +1,4 @@
-use crate::models::{Project, Subproject, Task, TaskStatus};
+use crate::models::{Project, Subproject, Task, ProgressStatus};
 use regex::Regex;
 use std::{
     error::Error,
@@ -95,9 +95,9 @@ impl TaskFileRepository {
                 let marker = capture.get(1).unwrap().as_str();
 
                 let status = match marker {
-                    "x" | "X" => TaskStatus::Done,
-                    "/" => TaskStatus::Started,
-                    _ => TaskStatus::Pending,
+                    "x" | "X" => ProgressStatus::Done,
+                    "/" => ProgressStatus::Started,
+                    _ => ProgressStatus::Pending,
                 };
 
                 project.subprojects.last_mut().unwrap().tasks.push(Task {
