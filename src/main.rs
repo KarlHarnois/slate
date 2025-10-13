@@ -15,10 +15,8 @@ fn main() -> color_eyre::Result<()> {
     result
 }
 
-/// The main application which holds the state and logic of the application.
 #[derive(Debug, Default)]
 pub struct App {
-    /// Is the application running?
     running: bool,
 }
 
@@ -38,12 +36,6 @@ impl App {
         Ok(())
     }
 
-    /// Renders the user interface.
-    ///
-    /// This is where you add new widgets. See the following resources for more information:
-    ///
-    /// - <https://docs.rs/ratatui/latest/ratatui/widgets/index.html>
-    /// - <https://github.com/ratatui/ratatui/tree/main/ratatui-widgets/examples>
     fn render(&mut self, frame: &mut Frame) {
         let title = Line::from("Ratatui Simple Template")
             .bold()
@@ -60,13 +52,8 @@ impl App {
         )
     }
 
-    /// Reads the crossterm events and updates the state of [`App`].
-    ///
-    /// If your application needs to perform work in between handling events, you can use the
-    /// [`event::poll`] function to check if there are any events available with a timeout.
     fn handle_crossterm_events(&mut self) -> Result<()> {
         match event::read()? {
-            // it's important to check KeyEventKind::Press to avoid handling key release events
             Event::Key(key) if key.kind == KeyEventKind::Press => self.on_key_event(key),
             Event::Mouse(_) => {}
             Event::Resize(_, _) => {}
@@ -75,7 +62,6 @@ impl App {
         Ok(())
     }
 
-    /// Handles the key events and updates the state of [`App`].
     fn on_key_event(&mut self, key: KeyEvent) {
         match (key.modifiers, key.code) {
             (_, KeyCode::Esc | KeyCode::Char('q'))
@@ -85,7 +71,6 @@ impl App {
         }
     }
 
-    /// Set running to false to quit the application.
     fn quit(&mut self) {
         self.running = false;
     }
