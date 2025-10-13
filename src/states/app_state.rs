@@ -1,6 +1,6 @@
+use crate::actions::Action;
 use crate::models::Project;
 use crate::states::{TableState, TableType};
-use crate::actions::Action;
 
 #[derive(Debug)]
 pub struct AppState {

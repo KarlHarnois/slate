@@ -1,5 +1,5 @@
-use crate::states::AppState;
 use crate::actions::Action;
+use crate::states::AppState;
 
 pub trait ActionFactory {
     fn create(&self) -> Box<dyn Action>;

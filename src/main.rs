@@ -1,9 +1,9 @@
+mod actions;
 mod app;
 mod components;
 mod models;
 mod states;
 mod task_repository;
-mod actions;
 
 fn main() -> color_eyre::Result<()> {
     color_eyre::install()?;

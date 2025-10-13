@@ -20,7 +20,7 @@ impl Table {
                     .borders(Borders::ALL)
                     .border_type(BorderType::Thick)
                     .border_style(Self::border_style(&state))
-                    .padding(Padding::new(1, 0, 0, 0))
+                    .padding(Padding::new(1, 0, 0, 0)),
             )
             .row_highlight_style(Style::default().reversed())
             .row_highlight_style(if state.is_focused {
