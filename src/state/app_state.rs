@@ -1,6 +1,6 @@
 use crate::models::Project;
 use crate::state::{TableState, TableType};
-use crate::actions::{Action, ActionFactory};
+use crate::actions::Action;
 
 #[derive(Debug)]
 pub struct AppState {
@@ -23,11 +23,6 @@ impl AppState {
 
     pub fn get_project(&self) -> &[Project] {
         &self.projects
-    }
-
-    pub fn apply_factory<A: ActionFactory>(&mut self, factory: A) {
-        let action = factory.create();
-        action.apply(self);
     }
 
     pub fn apply<A: Action>(&mut self, action: A) {
