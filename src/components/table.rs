@@ -1,4 +1,5 @@
 use crate::state::{TableState, TableType};
+
 use ratatui::{
     layout::Constraint,
     style::{Color, Style, Stylize},
@@ -10,23 +11,11 @@ pub struct Table {}
 
 impl Table {
     pub fn new<'a>(state: &'a TableState) -> widgets::Table<'a> {
-        let header = Row::new(state.header.iter().map(|column_name| {
-            Cell::from(column_name.clone()).style(Style::default().fg(Color::Yellow))
-        }))
-        .style(Style::new().bold())
-        .bottom_margin(1);
-
-        let rows: Vec<Row> = state
-            .rows
-            .iter()
-            .map(|row| Row::new(row.iter().map(|cell_title| Cell::from(cell_title.clone()))))
-            .collect();
-
         widgets::Table::new(
-            rows,
+            Self::rows(&state),
             Self::constraints(&state.table_type)
         )
-        .header(header)
+        .header(Self::header(&state))
         .block(
             Block::default()
                 .title(format!(" {} ", state.title()))
@@ -37,6 +26,26 @@ impl Table {
                 .padding(Padding::new(1, 0, 0, 0)),
         )
         .row_highlight_style(Style::default().reversed())
+    }
+
+    fn header(state: &TableState) -> Row {
+        Row::new(state.header.iter().map(|column_name| {
+            Cell::from(column_name.clone()).style(Style::default().fg(Color::Yellow))
+        }))
+        .style(Style::new().bold())
+        .bottom_margin(1)
+    }
+
+    fn rows(state: &TableState) -> Vec<Row> {
+        state
+            .rows
+            .iter()
+            .map(|row| {
+                Row::new(row.iter().map(|cell_title| {
+                    Cell::from(cell_title.clone())
+                }))
+            })
+            .collect()
     }
 
     fn constraints(table_type: &TableType) -> Vec<Constraint> {
