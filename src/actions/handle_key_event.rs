@@ -1,6 +1,6 @@
 use crate::actions::{
-    Action, ActionFactory, focus_next_table::FocusNextTable, noop::NoOp,
-    quit_app::QuitApp,
+    Action, ActionFactory, MoveDownInTable, MoveUpInTable,
+    focus_next_table::FocusNextTable, noop::NoOp, quit_app::QuitApp,
 };
 
 use crossterm::event::{
@@ -20,6 +20,8 @@ impl ActionFactory for HandleKeyEvent {
             (KeyModifiers::NONE, Tab) => Box::new(FocusNextTable),
             (KeyModifiers::SHIFT, Tab) => Box::new(FocusNextTable),
             (_, BackTab) => Box::new(FocusNextTable),
+            (_, Char('k')) => Box::new(MoveUpInTable),
+            (_, Char('j')) => Box::new(MoveDownInTable),
             _ => Box::new(NoOp),
         }
     }
