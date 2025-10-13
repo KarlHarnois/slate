@@ -1,0 +1,12 @@
+[package]
+name = "slate"
+version = "0.1.0"
+description = "A todo list TUI on top of Obsidian"
+authors = ["Karl Rivest Harnois"]
+license = "MIT"
+edition = "2024"
+
+[dependencies]
+crossterm = "0.28.1"
+ratatui = "0.29.0"
+color-eyre = "0.6.3"
