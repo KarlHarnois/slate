@@ -31,6 +31,7 @@ impl AppState {
             self.tasks_table.rows = self.task_rows(&project);
         }
 
+        self.projects_table.is_focused = true;
         self.projects = projects;
     }
 
@@ -49,10 +50,7 @@ impl AppState {
     fn new_tasks_table() -> TableState {
         let mut table = TableState::new(TableType::Tasks);
 
-        table.header = vec![
-            "Status".to_string(),
-            "Name".to_string(),
-        ];
+        table.header = vec!["Status".to_string(), "Name".to_string()];
 
         table
     }
@@ -73,14 +71,10 @@ impl AppState {
     }
 
     fn task_rows(&self, project: &Project) -> Vec<Vec<String>> {
-        project.tasks
+        project
+            .tasks
             .iter()
-            .map(|task| {
-                vec![
-                    task.status.label(),
-                    task.name.clone(),
-                ]
-            })
+            .map(|task| vec![task.status.label(), task.name.clone()])
             .collect()
     }
 }

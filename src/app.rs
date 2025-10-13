@@ -1,6 +1,9 @@
 use color_eyre::Result;
 use crossterm::event::{self, Event, KeyCode, KeyEvent, KeyEventKind, KeyModifiers};
-use ratatui::{DefaultTerminal, Frame, layout::{Layout, Direction, Constraint}};
+use ratatui::{
+    DefaultTerminal, Frame,
+    layout::{Constraint, Direction, Layout},
+};
 
 use crate::components::Table;
 use crate::state::AppState;
@@ -42,10 +45,7 @@ impl App {
 
         let chunks = Layout::default()
             .direction(Direction::Vertical)
-            .constraints([
-                Constraint::Percentage(33),
-                Constraint::Percentage(66),
-            ])
+            .constraints([Constraint::Percentage(33), Constraint::Percentage(66)])
             .split(frame.area());
 
         frame.render_widget(projects_table, chunks[0]);

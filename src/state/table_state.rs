@@ -1,7 +1,7 @@
 #[derive(Debug)]
 pub enum TableType {
     Projects,
-    Tasks
+    Tasks,
 }
 
 #[derive(Debug)]
