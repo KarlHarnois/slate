@@ -6,15 +6,13 @@ pub struct MoveDownInTable;
 
 impl Action for MoveUpInTable {
     fn apply(self: Box<Self>, state: &mut AppState) {
-        TableMovement::perform(&mut state.projects_table, Direction::Up);
-        TableMovement::perform(&mut state.tasks_table, Direction::Up);
+        TableMovement::perform(state.focused_table_mut(), Direction::Up);
     }
 }
 
 impl Action for MoveDownInTable {
     fn apply(self: Box<Self>, state: &mut AppState) {
-        TableMovement::perform(&mut state.projects_table, Direction::Down);
-        TableMovement::perform(&mut state.tasks_table, Direction::Down);
+        TableMovement::perform(state.focused_table_mut(), Direction::Down);
     }
 }
 
@@ -34,7 +32,7 @@ impl<'a> TableMovement<'a> {
     }
 
     pub fn move_row(&mut self) {
-        if !self.table.is_focused || self.table.rows.is_empty() {
+        if self.table.rows.is_empty() {
             return;
         }
 

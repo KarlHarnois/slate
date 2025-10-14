@@ -2,12 +2,12 @@ use crate::actions::Action;
 use crate::states::AppState;
 
 pub trait ActionFactory {
-    fn create(&self) -> Box<dyn Action>;
+    fn create(&self, state: &AppState) -> Box<dyn Action>;
 }
 
 impl<A: ActionFactory> Action for A {
     fn apply(self: Box<Self>, state: &mut AppState) {
-        let action = self.create();
+        let action = self.create(state);
         action.apply(state);
     }
 }

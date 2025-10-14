@@ -24,6 +24,22 @@ impl AppState {
         Box::new(action).apply(self);
     }
 
+    pub fn focused_table(&self) -> &TableState {
+        if self.projects_table.is_focused {
+            &self.projects_table
+        } else {
+            &self.tasks_table
+        }
+    }
+
+    pub fn focused_table_mut(&mut self) -> &mut TableState {
+        if self.projects_table.is_focused {
+            &mut self.projects_table
+        } else {
+            &mut self.tasks_table
+        }
+    }
+
     fn new_project_table() -> TableState {
         let mut table = TableState::new(TableType::Projects);
 

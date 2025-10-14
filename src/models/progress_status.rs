@@ -8,9 +8,17 @@ pub enum ProgressStatus {
 impl ProgressStatus {
     pub fn label(&self) -> String {
         match self {
-            ProgressStatus::Pending => "Pending".to_string(),
-            ProgressStatus::Started => "Started".to_string(),
-            ProgressStatus::Done => "Done".to_string(),
+            Self::Pending => "Pending".to_string(),
+            Self::Started => "Started".to_string(),
+            Self::Done => "Done".to_string(),
+        }
+    }
+
+    pub fn next(self) -> Self {
+        match self {
+            Self::Pending => Self::Started,
+            Self::Started => Self::Done,
+            Self::Done => Self::Pending,
         }
     }
 }
