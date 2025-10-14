@@ -28,13 +28,7 @@ impl UpdateProjects {
         self.projects
             .iter()
             .map(|project| {
-                let tasks_count = project.tasks.len();
-                let subprojects_count = project.subprojects.len();
-                vec![
-                    project.name.clone(),
-                    tasks_count.to_string(),
-                    subprojects_count.to_string(),
-                ]
+                vec![project.name.clone(), project.tasks.len().to_string()]
             })
             .collect()
     }

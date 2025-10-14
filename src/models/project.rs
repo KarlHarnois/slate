@@ -1,4 +1,4 @@
-use crate::models::{Subproject, Task};
+use crate::models::Task;
 use std::path::PathBuf;
 
 #[derive(Debug, Clone)]
@@ -6,7 +6,6 @@ use std::path::PathBuf;
 pub struct Project {
     pub name: String,
     pub file_path: PathBuf,
-    pub subprojects: Vec<Subproject>,
     pub tasks: Vec<Task>,
 }
 
@@ -16,7 +15,6 @@ impl Project {
         Self {
             name: String::new(),
             file_path: PathBuf::new(),
-            subprojects: vec![],
             tasks: vec![],
         }
     }

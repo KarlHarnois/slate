@@ -62,11 +62,9 @@ impl Table {
 
     fn constraints(table_type: &TableType) -> Vec<Constraint> {
         match table_type {
-            TableType::Projects => vec![
-                Constraint::Percentage(60),
-                Constraint::Percentage(20),
-                Constraint::Percentage(20),
-            ],
+            TableType::Projects => {
+                vec![Constraint::Percentage(80), Constraint::Percentage(20)]
+            }
             TableType::Tasks => {
                 vec![Constraint::Percentage(10), Constraint::Percentage(90)]
             }

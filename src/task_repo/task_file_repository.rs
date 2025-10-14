@@ -1,4 +1,4 @@
-use crate::models::{ProgressStatus, Project, Subproject, Task};
+use crate::models::{ProgressStatus, Project, Task};
 use crate::task_repo::{TaskRepository, TaskRepositoryError};
 use regex::Regex;
 use std::{
@@ -31,27 +31,13 @@ impl TaskFileRepository {
         let mut project = Project {
             name: project_name,
             file_path: path.to_path_buf(),
-            subprojects: Vec::new(),
             tasks: Vec::new(),
         };
 
-        let regex_heading = Regex::new(r"^(#{1,6})\s+(.*)$").unwrap();
         let regex_task = Regex::new(r"^\s*-\s*\[(.| )\]\s+(.*)$").unwrap();
 
         for line in reader.lines() {
             let line = line?;
-
-            if let Some(capture) = regex_heading.captures(&line) {
-                let name = capture.get(2).unwrap().as_str().trim().to_string();
-
-                project.subprojects.push(Subproject {
-                    name,
-                    subprojects: Vec::new(),
-                    tasks: Vec::new(),
-                });
-
-                continue;
-            }
 
             if let Some(capture) = regex_task.captures(&line) {
                 let name = capture.get(2).unwrap().as_str().trim().to_string();
@@ -64,12 +50,7 @@ impl TaskFileRepository {
                 };
 
                 let task = Task { name, status };
-
-                if project.subprojects.is_empty() {
-                    project.tasks.push(task);
-                } else {
-                    project.subprojects.last_mut().unwrap().tasks.push(task);
-                }
+                project.tasks.push(task);
             }
         }
 
