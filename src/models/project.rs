@@ -9,3 +9,15 @@ pub struct Project {
     pub subprojects: Vec<Subproject>,
     pub tasks: Vec<Task>,
 }
+
+#[allow(dead_code)]
+impl Project {
+    pub fn new() -> Self {
+        Self {
+            name: String::new(),
+            file_path: PathBuf::new(),
+            subprojects: vec![],
+            tasks: vec![],
+        }
+    }
+}

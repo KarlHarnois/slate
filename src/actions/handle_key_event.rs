@@ -1,6 +1,7 @@
 use crate::actions::{
     Action, ActionFactory, MoveDownInTable, MoveUpInTable, ToggleTaskStatus,
     focus_next_table::FocusNextTable, noop::NoOp, quit_app::QuitApp,
+    select_project::SelectProject,
 };
 use crate::states::AppState;
 
@@ -29,7 +30,7 @@ impl ActionFactory for HandleKeyEvent {
                 if state.tasks_table.is_focused {
                     Box::new(ToggleTaskStatus)
                 } else {
-                    Box::new(FocusNextTable)
+                    Box::new(SelectProject)
                 }
             }
             _ => Box::new(NoOp),

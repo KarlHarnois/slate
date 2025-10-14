@@ -10,10 +10,13 @@ impl Action for UpdateProjects {
     fn apply(self: Box<Self>, state: &mut AppState) {
         state.projects_table.rows = self.project_rows();
 
-        if let Some(project) = self.projects.first() {
-            state.tasks_table.rows = self.task_rows(project);
-        }
+        let project_index = state.selected_project_index;
 
+        let Some(project) = self.projects.get(project_index) else {
+            return;
+        };
+
+        state.tasks_table.rows = self.task_rows(project);
         state.projects_table.is_focused = false;
         state.tasks_table.is_focused = true;
         state.projects = self.projects;
@@ -37,10 +40,6 @@ impl UpdateProjects {
     }
 
     fn task_rows(&self, project: &Project) -> Vec<Vec<String>> {
-        project
-            .tasks
-            .iter()
-            .map(|task| vec![task.status.label(), task.name.clone()])
-            .collect()
+        project.tasks.iter().map(|task| task.to_row()).collect()
     }
 }

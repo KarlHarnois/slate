@@ -8,6 +8,7 @@ pub struct AppState {
     pub projects_table: TableState,
     pub projects: Vec<Project>,
     pub tasks_table: TableState,
+    pub selected_project_index: usize,
 }
 
 impl AppState {
@@ -17,19 +18,12 @@ impl AppState {
             is_running: false,
             projects_table: Self::new_project_table(),
             tasks_table: Self::new_tasks_table(),
+            selected_project_index: 0,
         }
     }
 
     pub fn apply<A: Action>(&mut self, action: A) {
         Box::new(action).apply(self);
-    }
-
-    pub fn focused_table(&self) -> &TableState {
-        if self.projects_table.is_focused {
-            &self.projects_table
-        } else {
-            &self.tasks_table
-        }
     }
 
     pub fn focused_table_mut(&mut self) -> &mut TableState {
