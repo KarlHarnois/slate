@@ -6,52 +6,59 @@ pub struct MoveDownInTable;
 
 impl Action for MoveUpInTable {
     fn apply(self: Box<Self>, state: &mut AppState) {
-        self.select_previous_row_if_focused(&mut state.projects_table);
-        self.select_previous_row_if_focused(&mut state.tasks_table);
-    }
-}
-
-impl MoveUpInTable {
-    fn select_previous_row_if_focused(&self, table: &mut TableState) {
-        if table.is_focused {
-            table.selected_row = self.previous_row(table);
-        }
-    }
-
-    fn previous_row(&self, table: &TableState) -> Option<usize> {
-        if table.rows.is_empty() {
-            None
-        } else {
-            Some(match table.selected_row {
-                Some(0) | None => table.rows.len() - 1,
-                Some(index) => index - 1,
-            })
-        }
+        TableMovement::perform(&mut state.projects_table, Direction::Up);
+        TableMovement::perform(&mut state.tasks_table, Direction::Up);
     }
 }
 
 impl Action for MoveDownInTable {
     fn apply(self: Box<Self>, state: &mut AppState) {
-        self.select_next_row_if_focused(&mut state.projects_table);
-        self.select_next_row_if_focused(&mut state.tasks_table);
+        TableMovement::perform(&mut state.projects_table, Direction::Down);
+        TableMovement::perform(&mut state.tasks_table, Direction::Down);
     }
 }
 
-impl MoveDownInTable {
-    fn select_next_row_if_focused(&self, table: &mut TableState) {
-        if table.is_focused {
-            table.selected_row = self.next_row(table);
+enum Direction {
+    Up,
+    Down,
+}
+
+struct TableMovement<'a> {
+    table: &'a mut TableState,
+    direction: Direction,
+}
+
+impl<'a> TableMovement<'a> {
+    pub fn perform(table: &mut TableState, direction: Direction) {
+        TableMovement { table, direction }.move_row();
+    }
+
+    pub fn move_row(&mut self) {
+        if !self.table.is_focused || self.table.rows.is_empty() {
+            return;
+        }
+
+        match self.direction {
+            Direction::Up => self.table.selected_row = self.previous_row(),
+            Direction::Down => self.table.selected_row = self.next_row(),
         }
     }
 
-    fn next_row(&self, table: &TableState) -> Option<usize> {
-        if table.rows.is_empty() {
-            None
-        } else {
-            Some(match table.selected_row {
-                Some(index) if index + 1 < table.rows.len() => index + 1,
-                _ => 0,
-            })
-        }
+    fn previous_row(&self) -> Option<usize> {
+        Some(match self.table.selected_row {
+            Some(0) | None => self.rows_len() - 1,
+            Some(index) => index - 1,
+        })
+    }
+
+    fn next_row(&self) -> Option<usize> {
+        Some(match self.table.selected_row {
+            Some(index) if index + 1 < self.rows_len() => index + 1,
+            _ => 0,
+        })
+    }
+
+    fn rows_len(&self) -> usize {
+        self.table.rows.len()
     }
 }
