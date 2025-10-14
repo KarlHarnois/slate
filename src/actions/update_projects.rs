@@ -14,7 +14,7 @@ impl Action for UpdateProjects {
             state.tasks_table.rows = self.task_rows(project);
         }
 
-        state.projects_table.is_focused = true;
+        state.tasks_table.is_focused = true;
         state.projects = self.projects;
     }
 }
