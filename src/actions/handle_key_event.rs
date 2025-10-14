@@ -4,7 +4,7 @@ use crate::actions::{
 };
 
 use crossterm::event::{
-    KeyCode::{BackTab, Char, Esc, Tab},
+    KeyCode::{BackTab, Char, Down, Esc, Tab, Up},
     KeyEvent, KeyModifiers,
 };
 
@@ -22,6 +22,8 @@ impl ActionFactory for HandleKeyEvent {
             (_, BackTab) => Box::new(FocusNextTable),
             (_, Char('k')) => Box::new(MoveUpInTable),
             (_, Char('j')) => Box::new(MoveDownInTable),
+            (_, Up) => Box::new(MoveUpInTable),
+            (_, Down) => Box::new(MoveDownInTable),
             _ => Box::new(NoOp),
         }
     }
