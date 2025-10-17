@@ -10,7 +10,7 @@ pub struct Block {
 }
 
 impl Block {
-    pub fn to_widget<'a>(&'a self) -> widgets::Block<'a> {
+    pub fn into_widget<'a>(self) -> widgets::Block<'a> {
         widgets::Block::default()
             .title(format!(" {} ", self.title))
             .title_style(self.title_style())

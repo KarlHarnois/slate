@@ -1,10 +1,11 @@
+use crate::components::Block;
 use crate::states::{RowEmphasis, RowState, TableState, TableType};
 
 use ratatui::{
     layout::Constraint,
     style::{Color, Modifier, Style, Stylize},
     widgets,
-    widgets::{Block, BorderType, Borders, Cell, Padding, Row},
+    widgets::{Cell, Row},
 };
 
 pub struct Table;
@@ -17,13 +18,11 @@ impl Table {
         )
         .header(Self::header(state))
         .block(
-            Block::default()
-                .title(format!(" {} ", state.title()))
-                .title_style(Self::title_style(state))
-                .borders(Borders::ALL)
-                .border_type(BorderType::Thick)
-                .border_style(Self::border_style(state))
-                .padding(Padding::new(1, 0, 0, 0)),
+            Block {
+                title: state.title().clone(),
+                is_focused: state.is_focused,
+            }
+            .into_widget(),
         )
         .row_highlight_style(Style::default().reversed())
         .row_highlight_style(if state.is_focused {
@@ -75,22 +74,6 @@ impl Table {
             TableType::Tasks => {
                 vec![Constraint::Percentage(10), Constraint::Percentage(90)]
             }
-        }
-    }
-
-    fn title_style(state: &TableState) -> Style {
-        if state.is_focused {
-            Style::default().bold()
-        } else {
-            Style::default()
-        }
-    }
-
-    fn border_style(state: &TableState) -> Style {
-        if state.is_focused {
-            Style::default().fg(Color::Green)
-        } else {
-            Style::default()
         }
     }
 }

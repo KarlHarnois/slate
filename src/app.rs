@@ -54,7 +54,7 @@ impl App {
             };
             let area = self.popup_area(frame.area(), 60, 20);
             frame.render_widget(widgets::Clear, area);
-            frame.render_widget(block.to_widget(), area);
+            frame.render_widget(block.into_widget(), area);
         }
     }
 
