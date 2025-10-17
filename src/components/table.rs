@@ -25,7 +25,7 @@ impl<'a> Table<'a> {
             )
             .row_highlight_style(Style::default().reversed())
             .row_highlight_style(if self.state.is_focused {
-                Style::default().bg(Color::DarkGray).fg(Color::White)
+                Style::default().bg(Color::Yellow).fg(Color::White)
             } else {
                 Style::default()
             })
