@@ -1,4 +1,4 @@
-use crate::states::{TableState, TableType};
+use crate::states::{RowEmphasis, RowState, TableState, TableType};
 
 use ratatui::{
     layout::Constraint,
@@ -49,21 +49,22 @@ impl Table {
     }
 
     fn rows<'a>(state: &'a TableState) -> Vec<Row<'a>> {
-        state
-            .rows
-            .iter()
-            .map(|row| {
-                Row::new(row.cells.iter().map(|cell| Cell::from(cell.clone())))
-                    .style(if row.is_crossed_out {
-                        Style::default()
-                            .add_modifier(Modifier::DIM | Modifier::CROSSED_OUT)
-                    } else if row.is_emphasized {
-                        Style::default().fg(Color::Yellow)
-                    } else {
-                        Style::default()
-                    })
-            })
-            .collect()
+        state.rows.iter().map(Self::row).collect()
+    }
+
+    fn row<'a>(state: &'a RowState) -> Row<'a> {
+        Row::new(state.cells.iter().map(|cell| Cell::from(cell.clone()))).style(
+            {
+                let style = Style::default();
+
+                match state.emphasis {
+                    RowEmphasis::Low => style
+                        .add_modifier(Modifier::DIM | Modifier::CROSSED_OUT),
+                    RowEmphasis::Medium => style,
+                    RowEmphasis::High => style.fg(Color::Yellow),
+                }
+            },
+        )
     }
 
     fn constraints(table_type: &TableType) -> Vec<Constraint> {

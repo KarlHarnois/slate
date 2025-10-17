@@ -1,5 +1,5 @@
 use crate::models::ProgressStatus;
-use crate::states::RowState;
+use crate::states::{RowEmphasis, RowState};
 
 #[derive(Debug, Clone)]
 pub struct Task {
@@ -19,8 +19,11 @@ impl Task {
     pub fn to_row(&self) -> RowState {
         RowState {
             cells: vec![self.status.label(), self.name.to_string()],
-            is_crossed_out: self.status == ProgressStatus::Done,
-            is_emphasized: self.status == ProgressStatus::Started,
+            emphasis: match self.status {
+                ProgressStatus::Done => RowEmphasis::Low,
+                ProgressStatus::Pending => RowEmphasis::Medium,
+                ProgressStatus::Started => RowEmphasis::High,
+            },
         }
     }
 }

@@ -34,7 +34,7 @@ impl ToggleTaskStatus {
 mod tests {
     use crate::actions::{Action, ToggleTaskStatus, UpdateProjects};
     use crate::models::{ProgressStatus, Project, Task};
-    use crate::states::AppState;
+    use crate::states::{AppState, RowEmphasis, RowState};
 
     #[test]
     fn updates_the_correct_task() {
@@ -66,14 +66,12 @@ mod tests {
         );
 
         assert_eq!(
-            state.tasks_table.rows[1].cells,
-            vec!["Done".to_string(), "Buy Food".to_string()],
+            state.tasks_table.rows[1],
+            RowState {
+                cells: vec!["Done".to_string(), "Buy Food".to_string()],
+                emphasis: RowEmphasis::Low
+            },
             "Task cells should be updated"
-        );
-
-        assert!(
-            state.tasks_table.rows[1].is_crossed_out,
-            "Task row should be crossed out"
         );
     }
 }
