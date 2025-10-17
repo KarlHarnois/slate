@@ -1,6 +1,6 @@
 use crate::actions::Action;
 use crate::models::Project;
-use crate::states::{TableState, TableType};
+use crate::states::{ModalState, TableState, TableType};
 
 #[derive(Debug)]
 pub struct AppState {
@@ -9,6 +9,7 @@ pub struct AppState {
     pub projects: Vec<Project>,
     pub tasks_table: TableState,
     pub selected_project_index: usize,
+    pub modal: Option<ModalState>,
 }
 
 impl AppState {
@@ -19,6 +20,7 @@ impl AppState {
             projects_table: Self::new_project_table(),
             tasks_table: Self::new_tasks_table(),
             selected_project_index: 0,
+            modal: None,
         }
     }
 

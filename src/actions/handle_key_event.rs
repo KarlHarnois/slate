@@ -1,6 +1,9 @@
 use crate::actions::{
     Action, ActionFactory, MoveDownInTable, MoveUpInTable, ToggleTaskStatus,
-    focus_next_table::FocusNextTable, noop::NoOp, quit_app::QuitApp,
+    focus_next_table::FocusNextTable,
+    modals::{ShowNewProjectModal, ShowNewTaskModal},
+    noop::NoOp,
+    quit_app::QuitApp,
     select_project::SelectProject,
 };
 use crate::states::AppState;
@@ -22,6 +25,13 @@ impl ActionFactory for HandleKeyEvent {
             (KeyModifiers::NONE, Tab) => Box::new(FocusNextTable),
             (KeyModifiers::SHIFT, Tab) => Box::new(FocusNextTable),
             (_, BackTab) => Box::new(FocusNextTable),
+            (_, Char('a')) => {
+                if state.tasks_table.is_focused {
+                    Box::new(ShowNewTaskModal)
+                } else {
+                    Box::new(ShowNewProjectModal)
+                }
+            }
             (_, Char('k')) => Box::new(MoveUpInTable),
             (_, Char('j')) => Box::new(MoveDownInTable),
             (_, Up) => Box::new(MoveUpInTable),
