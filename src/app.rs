@@ -74,7 +74,7 @@ impl App {
         area: Rect,
         state: &crate::states::TableState,
     ) {
-        let table = Table::build_widget(state);
+        let table = Table { state }.into_widget();
         let mut widget_state = widgets::TableState::default();
         widget_state.select(state.selected_row);
         frame.render_stateful_widget(table, area, &mut widget_state);
