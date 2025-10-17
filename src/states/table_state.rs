@@ -1,3 +1,5 @@
+use crate::states::RowState;
+
 #[derive(Debug)]
 pub enum TableType {
     Projects,
@@ -8,7 +10,7 @@ pub enum TableType {
 pub struct TableState {
     pub table_type: TableType,
     pub header: Vec<String>,
-    pub rows: Vec<Vec<String>>,
+    pub rows: Vec<RowState>,
     pub is_focused: bool,
     pub selected_row: Option<usize>,
 }

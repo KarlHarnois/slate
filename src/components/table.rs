@@ -2,7 +2,7 @@ use crate::states::{TableState, TableType};
 
 use ratatui::{
     layout::Constraint,
-    style::{Color, Style, Stylize},
+    style::{Color, Modifier, Style, Stylize},
     widgets,
     widgets::{Block, BorderType, Borders, Cell, Padding, Row},
 };
@@ -53,9 +53,15 @@ impl Table {
             .rows
             .iter()
             .map(|row| {
-                Row::new(
-                    row.iter().map(|cell_title| Cell::from(cell_title.clone())),
-                )
+                Row::new(row.cells.iter().map(|cell| Cell::from(cell.clone())))
+                    .style(if row.is_crossed_out {
+                        Style::default()
+                            .add_modifier(Modifier::DIM | Modifier::CROSSED_OUT)
+                    } else if row.is_emphasized {
+                        Style::default().fg(Color::Yellow)
+                    } else {
+                        Style::default()
+                    })
             })
             .collect()
     }

@@ -1,6 +1,6 @@
 use crate::actions::Action;
 use crate::models::Project;
-use crate::states::AppState;
+use crate::states::{AppState, RowState};
 
 pub struct UpdateProjects {
     pub projects: Vec<Project>,
@@ -24,16 +24,19 @@ impl Action for UpdateProjects {
 }
 
 impl UpdateProjects {
-    fn project_rows(&self) -> Vec<Vec<String>> {
+    fn project_rows(&self) -> Vec<RowState> {
         self.projects
             .iter()
             .map(|project| {
-                vec![project.name.clone(), project.tasks.len().to_string()]
+                RowState::new(vec![
+                    project.name.clone(),
+                    project.tasks.len().to_string(),
+                ])
             })
             .collect()
     }
 
-    fn task_rows(&self, project: &Project) -> Vec<Vec<String>> {
+    fn task_rows(&self, project: &Project) -> Vec<RowState> {
         project.tasks.iter().map(|task| task.to_row()).collect()
     }
 }

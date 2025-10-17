@@ -1,5 +1,5 @@
 use crate::actions::Action;
-use crate::states::AppState;
+use crate::states::{AppState, RowState};
 
 pub struct ToggleTaskStatus;
 
@@ -21,7 +21,7 @@ impl ToggleTaskStatus {
         self,
         state: &mut AppState,
         task_index: usize,
-    ) -> Option<Vec<String>> {
+    ) -> Option<RowState> {
         let project_index = state.selected_project_index;
         let project = state.projects.get_mut(project_index)?;
         let task = project.tasks.get_mut(task_index)?;
@@ -66,9 +66,14 @@ mod tests {
         );
 
         assert_eq!(
-            state.tasks_table.rows[1],
+            state.tasks_table.rows[1].cells,
             vec!["Done".to_string(), "Buy Food".to_string()],
-            "Task row should be updated"
+            "Task cells should be updated"
+        );
+
+        assert!(
+            state.tasks_table.rows[1].is_crossed_out,
+            "Task row should be crossed out"
         );
     }
 }
