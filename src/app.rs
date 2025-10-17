@@ -6,9 +6,11 @@ use color_eyre::Result;
 use crossterm::event::{self, Event, KeyEvent, KeyEventKind};
 use ratatui::{
     DefaultTerminal, Frame,
-    layout::{Constraint, Direction, Flex, Layout, Rect},
+    layout::{Alignment, Constraint, Direction, Flex, Layout, Rect},
+    style::{Color, Style},
     text::Line,
     widgets,
+    widgets::Paragraph,
 };
 use std::rc::Rc;
 
@@ -44,7 +46,7 @@ impl App {
     }
 
     fn render(&mut self, frame: &mut Frame) {
-        let chunks = self.tables_chunk(frame.area());
+        let chunks = self.chunks(frame.area());
         self.render_table(frame, chunks[0], &self.state.projects_table);
         self.render_table(frame, chunks[1], &self.state.tasks_table);
 
@@ -60,14 +62,29 @@ impl App {
             frame.render_widget(widgets::Clear, area);
             frame.render_widget(block, area);
         }
+
+        let keybindings = [
+            "New: a",
+            "Act: <space>",
+            "Switch table: <tab>",
+            "Quit: <esc>/q",
+        ]
+        .join(" | ");
+
+        let footer = Paragraph::new(format!(" {} ", keybindings))
+            .style(Style::default().fg(Color::Cyan))
+            .alignment(Alignment::Left);
+
+        frame.render_widget(footer, chunks[2]);
     }
 
-    fn tables_chunk(&self, area: Rect) -> Rc<[Rect]> {
+    fn chunks(&self, area: Rect) -> Rc<[Rect]> {
         Layout::default()
             .direction(Direction::Vertical)
             .constraints([
                 Constraint::Percentage(33),
                 Constraint::Percentage(66),
+                Constraint::Length(1),
             ])
             .split(area)
     }

@@ -32,11 +32,4 @@ impl TableState {
             TableType::Tasks => "Tasks".to_string(),
         }
     }
-
-    pub fn keybindings(&self) -> Option<String> {
-        match self.table_type {
-            TableType::Projects => Some("[a] New [Space] Select".to_string()),
-            TableType::Tasks => Some("[a] New [Space] Toggle".to_string()),
-        }
-    }
 }
