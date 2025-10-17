@@ -1,8 +1,4 @@
 #[derive(Debug)]
-pub struct ModalState {}
-
-impl ModalState {
-    pub fn new() -> Self {
-        Self {}
-    }
+pub struct ModalState {
+    pub title: String,
 }

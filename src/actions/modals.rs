@@ -6,12 +6,16 @@ pub struct ShowNewProjectModal;
 
 impl Action for ShowNewTaskModal {
     fn apply(self: Box<Self>, state: &mut AppState) {
-        state.modal = Some(ModalState::new());
+        state.modal = Some(ModalState {
+            title: "New Task".to_string(),
+        });
     }
 }
 
 impl Action for ShowNewProjectModal {
     fn apply(self: Box<Self>, state: &mut AppState) {
-        state.modal = Some(ModalState::new());
+        state.modal = Some(ModalState {
+            title: "New Project".to_string(),
+        });
     }
 }

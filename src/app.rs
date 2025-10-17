@@ -6,7 +6,7 @@ use color_eyre::Result;
 use crossterm::event::{self, Event, KeyEvent, KeyEventKind};
 use ratatui::{
     DefaultTerminal, Frame,
-    layout::{Constraint, Direction, Layout, Rect},
+    layout::{Constraint, Direction, Flex, Layout, Rect},
     widgets,
 };
 use std::rc::Rc;
@@ -46,6 +46,14 @@ impl App {
         let chunks = self.tables_chunk(frame.area());
         self.render_table(frame, chunks[0], &self.state.projects_table);
         self.render_table(frame, chunks[1], &self.state.tasks_table);
+
+        if let Some(modal) = self.state.modal.as_ref() {
+            let block =
+                widgets::Block::bordered().title(format!(" {} ", modal.title));
+            let area = self.popup_area(frame.area(), 60, 20);
+            frame.render_widget(widgets::Clear, area);
+            frame.render_widget(block, area);
+        }
     }
 
     fn tables_chunk(&self, area: Rect) -> Rc<[Rect]> {
@@ -68,6 +76,17 @@ impl App {
         let mut widget_state = widgets::TableState::default();
         widget_state.select(state.selected_row);
         frame.render_stateful_widget(table, area, &mut widget_state);
+    }
+
+    fn popup_area(&self, area: Rect, percent_x: u16, percent_y: u16) -> Rect {
+        let vertical = Layout::vertical([Constraint::Percentage(percent_y)])
+            .flex(Flex::Center);
+        let horizontal =
+            Layout::horizontal([Constraint::Percentage(percent_x)])
+                .flex(Flex::Center);
+        let [area] = vertical.areas(area);
+        let [area] = horizontal.areas(area);
+        area
     }
 
     fn handle_crossterm_events(&mut self) -> Result<()> {
