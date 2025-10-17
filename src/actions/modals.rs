@@ -1,21 +1,41 @@
 use crate::actions::Action;
-use crate::states::{AppState, ModalState};
+use crate::states::{AppState, ModalState, ModalType};
 
 pub struct ShowNewTaskModal;
 pub struct ShowNewProjectModal;
+pub struct CancelModal;
 
 impl Action for ShowNewTaskModal {
     fn apply(self: Box<Self>, state: &mut AppState) {
+        state.projects_table.is_focused = false;
+        state.tasks_table.is_focused = false;
+
         state.modal = Some(ModalState {
-            title: "New Task".to_string(),
+            modal_type: ModalType::NewTask,
         });
     }
 }
 
 impl Action for ShowNewProjectModal {
     fn apply(self: Box<Self>, state: &mut AppState) {
+        state.projects_table.is_focused = false;
+        state.tasks_table.is_focused = false;
+
         state.modal = Some(ModalState {
-            title: "New Project".to_string(),
+            modal_type: ModalType::NewProject,
         });
+    }
+}
+
+impl Action for CancelModal {
+    fn apply(self: Box<Self>, state: &mut AppState) {
+        let Some(modal) = state.modal.take() else {
+            return;
+        };
+
+        match modal.modal_type {
+            ModalType::NewProject => state.projects_table.is_focused = true,
+            ModalType::NewTask => state.tasks_table.is_focused = true,
+        };
     }
 }

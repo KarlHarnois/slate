@@ -49,7 +49,7 @@ impl App {
 
         if let Some(modal) = self.state.modal.as_ref() {
             let block = Block {
-                title: modal.title.clone(),
+                title: modal.title().clone(),
                 is_focused: true,
             };
             let area = self.popup_area(frame.area(), 60, 20);

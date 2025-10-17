@@ -1,7 +1,7 @@
 use crate::actions::{
     Action, ActionFactory, MoveDownInTable, MoveUpInTable, ToggleTaskStatus,
     focus_next_table::FocusNextTable,
-    modals::{ShowNewProjectModal, ShowNewTaskModal},
+    modals::{CancelModal, ShowNewProjectModal, ShowNewTaskModal},
     noop::NoOp,
     quit_app::QuitApp,
     select_project::SelectProject,
@@ -19,9 +19,38 @@ pub struct HandleKeyEvent {
 
 impl ActionFactory for HandleKeyEvent {
     fn create(&self, state: &AppState) -> Box<dyn Action> {
+        if let Some(action) = self.global_actions() {
+            return action;
+        }
+
+        if state.modal.is_some() {
+            self.modal_actions()
+        } else {
+            self.home_actions(state)
+        }
+    }
+}
+
+impl HandleKeyEvent {
+    fn global_actions(&self) -> Option<Box<dyn Action>> {
+        match (self.key.modifiers, self.key.code) {
+            (KeyModifiers::CONTROL, Char('c') | Char('C')) => {
+                Some(Box::new(QuitApp))
+            }
+            _ => None,
+        }
+    }
+
+    fn modal_actions(&self) -> Box<dyn Action> {
+        match (self.key.modifiers, self.key.code) {
+            (_, Esc | Char('q')) => Box::new(CancelModal),
+            _ => Box::new(NoOp),
+        }
+    }
+
+    fn home_actions(&self, state: &AppState) -> Box<dyn Action> {
         match (self.key.modifiers, self.key.code) {
             (_, Esc | Char('q')) => Box::new(QuitApp),
-            (KeyModifiers::CONTROL, Char('c') | Char('C')) => Box::new(QuitApp),
             (KeyModifiers::NONE, Tab) => Box::new(FocusNextTable),
             (KeyModifiers::SHIFT, Tab) => Box::new(FocusNextTable),
             (_, BackTab) => Box::new(FocusNextTable),

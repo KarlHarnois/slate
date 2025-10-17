@@ -4,6 +4,6 @@ pub mod row_state;
 pub mod table_state;
 
 pub use app_state::AppState;
-pub use modal_state::ModalState;
+pub use modal_state::{ModalState, ModalType};
 pub use row_state::{RowEmphasis, RowState};
 pub use table_state::{TableState, TableType};
