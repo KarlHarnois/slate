@@ -56,7 +56,7 @@ impl App {
                 is_focused: true,
             }
             .into_widget()
-            .title_bottom(Line::from(" [q] Cancel "));
+            .title_bottom(Line::from(" Cancel: <esc>/q "));
 
             let area = self.popup_area(frame.area(), 60, 20);
             frame.render_widget(widgets::Clear, area);
