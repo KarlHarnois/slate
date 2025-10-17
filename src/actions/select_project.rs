@@ -20,5 +20,8 @@ impl SelectProject {
         };
         state.tasks_table.rows =
             project.tasks.iter().map(|task| task.to_row()).collect();
+
+        state.projects_table.is_focused = false;
+        state.tasks_table.is_focused = true;
     }
 }
