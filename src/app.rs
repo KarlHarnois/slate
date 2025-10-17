@@ -1,5 +1,5 @@
 use crate::actions::{self, StartApp};
-use crate::components::Table;
+use crate::components::{Block, Table};
 use crate::states::AppState;
 use crate::task_repo::{TaskFileRepository, TaskRepository};
 use color_eyre::Result;
@@ -48,11 +48,13 @@ impl App {
         self.render_table(frame, chunks[1], &self.state.tasks_table);
 
         if let Some(modal) = self.state.modal.as_ref() {
-            let block =
-                widgets::Block::bordered().title(format!(" {} ", modal.title));
+            let block = Block {
+                title: modal.title.clone(),
+                is_focused: true,
+            };
             let area = self.popup_area(frame.area(), 60, 20);
             frame.render_widget(widgets::Clear, area);
-            frame.render_widget(block, area);
+            frame.render_widget(block.to_widget(), area);
         }
     }
 
