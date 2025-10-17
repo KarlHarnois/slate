@@ -4,6 +4,7 @@ use crate::states::{RowEmphasis, RowState, TableState, TableType};
 use ratatui::{
     layout::Constraint,
     style::{Color, Modifier, Style, Stylize},
+    text::Line,
     widgets,
     widgets::{Cell, Row},
 };
@@ -16,19 +17,27 @@ impl<'a> Table<'a> {
     pub fn into_widget(self) -> widgets::Table<'static> {
         widgets::Table::new(self.rows(), self.constraints())
             .header(self.header())
-            .block(
-                Block {
-                    title: self.state.title().clone(),
-                    is_focused: self.state.is_focused,
-                }
-                .into_widget(),
-            )
+            .block(self.block())
             .row_highlight_style(Style::default().reversed())
             .row_highlight_style(if self.state.is_focused {
                 Style::default().bg(Color::Yellow).fg(Color::White)
             } else {
                 Style::default()
             })
+    }
+
+    fn block(&self) -> widgets::Block<'static> {
+        let block = Block {
+            title: self.state.title().clone(),
+            is_focused: self.state.is_focused,
+        }
+        .into_widget();
+
+        if let Some(keybindings) = self.state.keybindings() {
+            block.title_bottom(Line::from(format!(" {} ", keybindings)))
+        } else {
+            block
+        }
     }
 
     fn header(&self) -> Row<'static> {
