@@ -8,7 +8,6 @@ use ratatui::{
     DefaultTerminal, Frame,
     layout::{Alignment, Constraint, Direction, Flex, Layout, Rect},
     style::{Color, Style},
-    text::Line,
     widgets,
     widgets::Paragraph,
 };
@@ -55,21 +54,14 @@ impl App {
                 title: modal.title().clone(),
                 is_focused: true,
             }
-            .into_widget()
-            .title_bottom(Line::from(" Cancel: <esc> "));
+            .into_widget();
 
             let area = self.popup_area(frame.area(), 60, 20);
             frame.render_widget(widgets::Clear, area);
             frame.render_widget(block, area);
         }
 
-        let keybindings = [
-            "New: a",
-            "Act: <space>",
-            "Switch table: <tab>",
-            "Quit: <esc>/q",
-        ]
-        .join(" | ");
+        let keybindings = self.state.keybindings().join(" | ");
 
         let footer = Paragraph::new(format!(" {} ", keybindings))
             .style(Style::default().fg(Color::Cyan))

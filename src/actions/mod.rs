@@ -16,7 +16,6 @@ pub use action_factory::ActionFactory;
 pub use focus_next_table::FocusNextTable;
 pub use handle_key_event::HandleKeyEvent;
 pub use noop::NoOp;
-pub use quit_app::QuitApp;
 pub use start_app::StartApp;
 pub use table_movements::{MoveDownInTable, MoveUpInTable};
 pub use toggle_task_status::ToggleTaskStatus;

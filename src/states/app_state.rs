@@ -1,6 +1,6 @@
 use crate::actions::Action;
-use crate::models::Project;
-use crate::states::{ModalState, TableState, TableType};
+use crate::models::{KeyBinding, KeyBindingContext, Project};
+use crate::states::{ModalState, ModalType, TableState, TableType};
 
 #[derive(Debug)]
 pub struct AppState {
@@ -33,6 +33,35 @@ impl AppState {
             &mut self.projects_table
         } else {
             &mut self.tasks_table
+        }
+    }
+
+    pub fn keybindings(&self) -> Vec<String> {
+        let Some(context) = self.keybinding_context() else {
+            return Vec::new();
+        };
+        KeyBinding::list_for(context)
+            .iter()
+            .map(|binding| binding.to_string())
+            .collect()
+    }
+
+    fn keybinding_context(&self) -> Option<KeyBindingContext> {
+        if let Some(modal) = self.modal.as_ref() {
+            match modal.modal_type {
+                ModalType::NewProject => {
+                    return Some(KeyBindingContext::NewProject);
+                }
+                ModalType::NewTask => return Some(KeyBindingContext::NewTask),
+            }
+        }
+
+        if self.projects_table.is_focused {
+            Some(KeyBindingContext::Projects)
+        } else if self.tasks_table.is_focused {
+            Some(KeyBindingContext::Tasks)
+        } else {
+            None
         }
     }
 }
