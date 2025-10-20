@@ -34,7 +34,8 @@ impl<'a> Table<'a> {
     }
 
     fn header(&self) -> Row<'static> {
-        let cells = self.state.header.iter().map(|column_name| {
+        let column_names = self.state.column_names();
+        let cells = column_names.iter().map(|column_name| {
             let cell = Cell::from(column_name.clone());
             let style = Style::default();
 
@@ -44,7 +45,13 @@ impl<'a> Table<'a> {
                 cell.style(style)
             }
         });
-        Row::new(cells).style(Style::new().bold()).bottom_margin(1)
+        Row::new(cells)
+            .bottom_margin(1)
+            .style(if self.state.is_focused {
+                Style::default().bold()
+            } else {
+                Style::default()
+            })
     }
 
     fn rows(&self) -> Vec<Row<'static>> {
@@ -57,10 +64,17 @@ impl<'a> Table<'a> {
                 let style = Style::default();
 
                 match row_state.emphasis {
-                    RowEmphasis::Low => style
-                        .add_modifier(Modifier::DIM | Modifier::CROSSED_OUT),
+                    RowEmphasis::Low => {
+                        style.fg(Color::DarkGray).add_modifier(Modifier::DIM)
+                    }
                     RowEmphasis::Medium => style,
-                    RowEmphasis::High => style.fg(Color::Yellow),
+                    RowEmphasis::High => {
+                        if self.state.is_focused {
+                            style.fg(Color::Yellow)
+                        } else {
+                            style
+                        }
+                    }
                 }
             })
     }
@@ -68,7 +82,7 @@ impl<'a> Table<'a> {
     fn constraints(&self) -> Vec<Constraint> {
         match self.state.table_type {
             TableType::Projects => {
-                vec![Constraint::Percentage(80), Constraint::Percentage(20)]
+                vec![Constraint::Length(2), Constraint::Min(1)]
             }
             TableType::Tasks => {
                 vec![Constraint::Percentage(10), Constraint::Percentage(90)]

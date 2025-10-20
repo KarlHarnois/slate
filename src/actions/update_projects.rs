@@ -27,16 +27,18 @@ impl UpdateProjects {
     fn project_rows(&self) -> Vec<RowState> {
         self.projects
             .iter()
-            .map(|project| {
-                RowState::new(vec![
-                    project.name.clone(),
-                    project.tasks.len().to_string(),
-                ])
+            .enumerate()
+            .map(|(index, project)| {
+                let mut row = RowState::from(project);
+                if index == 0 {
+                    row.add_checkmark();
+                }
+                row
             })
             .collect()
     }
 
     fn task_rows(&self, project: &Project) -> Vec<RowState> {
-        project.tasks.iter().map(|task| task.to_row()).collect()
+        project.tasks.iter().map(RowState::from).collect()
     }
 }

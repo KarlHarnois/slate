@@ -26,7 +26,7 @@ impl ToggleTaskStatus {
         let project = state.projects.get_mut(project_index)?;
         let task = project.tasks.get_mut(task_index)?;
         task.status = task.status.next();
-        Some(task.to_row())
+        Some(RowState::from(&*task))
     }
 }
 

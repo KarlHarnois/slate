@@ -17,8 +17,8 @@ impl AppState {
         Self {
             projects: Vec::new(),
             is_running: false,
-            projects_table: Self::new_project_table(),
-            tasks_table: Self::new_tasks_table(),
+            projects_table: TableState::new(TableType::Projects),
+            tasks_table: TableState::new(TableType::Tasks),
             selected_project_index: 0,
             modal: None,
         }
@@ -34,25 +34,5 @@ impl AppState {
         } else {
             &mut self.tasks_table
         }
-    }
-
-    fn new_project_table() -> TableState {
-        let mut table = TableState::new(TableType::Projects);
-
-        table.header = vec![
-            "Name".to_string(),
-            "Tasks".to_string(),
-            "Subprojects".to_string(),
-        ];
-
-        table
-    }
-
-    fn new_tasks_table() -> TableState {
-        let mut table = TableState::new(TableType::Tasks);
-
-        table.header = vec!["Status".to_string(), "Name".to_string()];
-
-        table
     }
 }
