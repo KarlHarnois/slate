@@ -1,8 +1,7 @@
 use crate::actions::{
-    Action, ActionFactory, MoveDownInTable, MoveUpInTable, ToggleTaskStatus,
-    focus_next_table::FocusNextTable,
+    Action, ActionFactory, FocusNextTable, MoveDownInTable, MoveUpInTable,
+    NoOp, ToggleTaskStatus,
     modals::{CancelModal, ShowNewProjectModal, ShowNewTaskModal},
-    noop::NoOp,
     quit_app::QuitApp,
     select_project::SelectProject,
 };
@@ -43,7 +42,7 @@ impl HandleKeyEvent {
 
     fn modal_actions(&self) -> Box<dyn Action> {
         match (self.key.modifiers, self.key.code) {
-            (_, Esc | Char('q')) => Box::new(CancelModal),
+            (_, Esc) => Box::new(CancelModal),
             _ => Box::new(NoOp),
         }
     }
