@@ -2,6 +2,7 @@ mod actions;
 mod app;
 mod components;
 mod models;
+mod selectors;
 mod states;
 mod task_repo;
 

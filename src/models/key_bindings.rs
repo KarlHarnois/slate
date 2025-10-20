@@ -8,38 +8,35 @@ pub enum KeyBindingContext {
 }
 
 pub struct KeyBinding {
-    pub action: String,
-    pub keys: Vec<String>,
+    pub action: &'static str,
+    pub keys: &'static [&'static str],
 }
 
 impl KeyBinding {
+    fn new(action: &'static str, keys: &'static [&'static str]) -> Self {
+        Self { action, keys }
+    }
+
     pub fn list_for(context: KeyBindingContext) -> Vec<KeyBinding> {
         match context {
             KeyBindingContext::Projects => vec![
-                Self::binding("New", ["a"]),
-                Self::binding("Select", ["<space>"]),
-                Self::binding("Switch Table", ["<tab>"]),
-                Self::binding("Quit", ["<esc>", "q"]),
+                Self::new("New", &["a"]),
+                Self::new("Select", &["<space>"]),
+                Self::new("Switch Table", &["<tab>"]),
+                Self::new("Quit", &["<esc>", "q"]),
             ],
             KeyBindingContext::Tasks => vec![
-                Self::binding("New", ["a"]),
-                Self::binding("Toggle", ["<space>"]),
-                Self::binding("Switch Table", ["<tab>"]),
-                Self::binding("Quit", ["<esc>", "q"]),
+                Self::new("New", &["a"]),
+                Self::new("Toggle", &["<space>"]),
+                Self::new("Switch Table", &["<tab>"]),
+                Self::new("Quit", &["<esc>", "q"]),
             ],
             KeyBindingContext::NewProject => {
-                vec![Self::binding("Cancel", ["<esc>"])]
+                vec![Self::new("Cancel", &["<esc>"])]
             }
             KeyBindingContext::NewTask => {
-                vec![Self::binding("Cancel", ["<esc>"])]
+                vec![Self::new("Cancel", &["<esc>"])]
             }
-        }
-    }
-
-    fn binding<'a>(action: &str, keys: impl AsRef<[&'a str]>) -> Self {
-        Self {
-            action: action.to_string(),
-            keys: keys.as_ref().iter().map(|key| key.to_string()).collect(),
         }
     }
 }

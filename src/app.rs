@@ -1,5 +1,6 @@
 use crate::actions::{self, StartApp};
 use crate::components::{Block, Table};
+use crate::selectors::KeyBindingsSelector;
 use crate::states::AppState;
 use crate::task_repo::{TaskFileRepository, TaskRepository};
 use color_eyre::Result;
@@ -61,7 +62,7 @@ impl App {
             frame.render_widget(block, area);
         }
 
-        let keybindings = self.state.keybindings().join(" | ");
+        let keybindings = self.state.select(KeyBindingsSelector).join(" | ");
 
         let footer = Paragraph::new(format!(" {} ", keybindings))
             .style(Style::default().fg(Color::Cyan))
