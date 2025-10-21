@@ -1,5 +1,5 @@
-use crate::components::Block;
 use crate::states::{RowEmphasis, RowState, TableState, TableType};
+use crate::widgets::Block;
 
 use ratatui::{
     layout::Constraint,
@@ -29,6 +29,7 @@ impl<'a> Table<'a> {
         Block {
             title: self.state.title().clone(),
             is_focused: self.state.is_focused,
+            ..Default::default()
         }
         .into_widget()
     }
