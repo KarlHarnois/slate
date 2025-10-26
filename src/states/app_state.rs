@@ -30,7 +30,7 @@ impl AppState {
     }
 
     pub fn select<A>(&self, selector: impl Selector<A>) -> A {
-        selector.select(&self)
+        selector.select(self)
     }
 
     pub fn focused_table_mut(&mut self) -> &mut TableState {
