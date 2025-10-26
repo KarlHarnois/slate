@@ -37,23 +37,23 @@ impl<'a> TableMovement<'a> {
         }
 
         match self.direction {
-            Direction::Up => self.table.selected_row = self.previous_row(),
-            Direction::Down => self.table.selected_row = self.next_row(),
+            Direction::Up => self.table.select_row(self.previous_row()),
+            Direction::Down => self.table.select_row(self.next_row()),
         }
     }
 
-    fn previous_row(&self) -> Option<usize> {
-        Some(match self.table.selected_row {
+    fn previous_row(&self) -> usize {
+        match self.table.selected_row {
             Some(0) | None => self.rows_len() - 1,
             Some(index) => index - 1,
-        })
+        }
     }
 
-    fn next_row(&self) -> Option<usize> {
-        Some(match self.table.selected_row {
+    fn next_row(&self) -> usize {
+        match self.table.selected_row {
             Some(index) if index + 1 < self.rows_len() => index + 1,
             _ => 0,
-        })
+        }
     }
 
     fn rows_len(&self) -> usize {

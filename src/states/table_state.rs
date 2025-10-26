@@ -1,6 +1,6 @@
 use crate::states::RowState;
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy, Eq, PartialEq)]
 pub enum TableType {
     Projects,
     Tasks,
@@ -22,6 +22,10 @@ impl TableState {
             is_focused: false,
             selected_row: Some(0),
         }
+    }
+
+    pub fn select_row(&mut self, index: usize) {
+        self.selected_row = Some(index);
     }
 
     pub fn title(&self) -> String {

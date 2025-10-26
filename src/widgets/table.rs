@@ -24,11 +24,11 @@ impl<'a> Widget for Table<'a> {
                 Style::default()
             });
 
+        let mut state = widgets::TableState::new();
+        state.select(self.state.selected_row);
+
         <widgets::Table as StatefulWidget>::render(
-            table,
-            area,
-            buffer,
-            &mut self.state.ui,
+            table, area, buffer, &mut state,
         );
     }
 }

@@ -88,7 +88,7 @@ impl App {
         state: &crate::states::TableState,
     ) {
         let table = Table { state };
-        frame.render_stateful_widget(table, area, &mut state.ui);
+        frame.render_widget(table, area);
     }
 
     fn popup_area(&self, area: Rect) -> Rect {

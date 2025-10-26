@@ -34,6 +34,6 @@ impl SelectProject {
 
         state.projects_table.is_focused = false;
         state.tasks_table.is_focused = true;
-        state.tasks_table.selected_row = Some(0);
+        state.tasks_table.select_row(0);
     }
 }
