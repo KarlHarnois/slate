@@ -36,34 +36,109 @@ mod tests {
     use crate::models::{ProgressStatus, Project, Task};
     use crate::states::{AppState, RowEmphasis, RowState};
 
-    #[test]
-    fn updates_the_correct_task() {
-        let mut state = AppState::new();
+    fn tasks() -> Vec<Task> {
+        vec![
+            Task {
+                name: "Read Emails".to_string(),
+                status: ProgressStatus::Pending,
+            },
+            Task {
+                name: "Buy Food".to_string(),
+                status: ProgressStatus::Started,
+            },
+            Task {
+                name: "Clean Kitchen".to_string(),
+                status: ProgressStatus::Done,
+            },
+        ]
+    }
+
+    fn project() -> Project {
         let mut project = Project::new();
+        project.tasks = tasks();
+        project
+    }
+
+    fn app_state() -> AppState {
+        let mut state = AppState::new();
+        let projects = vec![project()];
 
         state.projects_table.is_focused = false;
         state.tasks_table.is_focused = true;
-        state.tasks_table.selected_row = Some(1);
 
-        project.tasks = vec![Task::new(), Task::new(), Task::new()];
+        Box::new(UpdateProjects { projects }).apply(&mut state);
 
-        if let Some(task) = project.tasks.get_mut(1) {
-            task.name = "Buy Food".to_string();
-            task.status = ProgressStatus::Started;
-        }
+        state
+    }
 
-        Box::new(UpdateProjects {
-            projects: vec![project],
-        })
-        .apply(&mut state);
+    fn task_statuses(state: &AppState) -> Vec<ProgressStatus> {
+        state.projects[0]
+            .tasks
+            .iter()
+            .map(|task| task.status)
+            .collect()
+    }
 
+    #[test]
+    fn updates_pending_tasks_to_started() {
+        let mut state = app_state();
+
+        state.tasks_table.selected_row = Some(0);
         Box::new(ToggleTaskStatus).apply(&mut state);
 
         assert_eq!(
-            state.projects[0].tasks[1].status,
-            ProgressStatus::Done,
-            "Task status should be updated"
+            task_statuses(&state),
+            vec![
+                ProgressStatus::Started,
+                ProgressStatus::Started,
+                ProgressStatus::Done,
+            ],
+            "Task should be started"
         );
+    }
+
+    #[test]
+    fn updates_started_tasks_to_done() {
+        let mut state = app_state();
+
+        state.tasks_table.selected_row = Some(1);
+        Box::new(ToggleTaskStatus).apply(&mut state);
+
+        assert_eq!(
+            task_statuses(&state),
+            vec![
+                ProgressStatus::Pending,
+                ProgressStatus::Done,
+                ProgressStatus::Done,
+            ],
+            "Task should be done"
+        );
+    }
+
+    #[test]
+    fn updates_done_tasks_to_pending() {
+        let mut state = app_state();
+
+        state.tasks_table.selected_row = Some(2);
+        Box::new(ToggleTaskStatus).apply(&mut state);
+
+        assert_eq!(
+            task_statuses(&state),
+            vec![
+                ProgressStatus::Pending,
+                ProgressStatus::Started,
+                ProgressStatus::Pending
+            ],
+            "Task should be pending"
+        );
+    }
+
+    #[test]
+    fn updates_the_row_state() {
+        let mut state = app_state();
+
+        state.tasks_table.selected_row = Some(1);
+        Box::new(ToggleTaskStatus).apply(&mut state);
 
         assert_eq!(
             state.tasks_table.rows[1],

@@ -2,7 +2,8 @@ use crate::states::{RowEmphasis, RowState, TableState, TableType};
 use crate::widgets::Block;
 
 use ratatui::{
-    layout::Constraint,
+    layout::Rect,
+    prelude::*,
     style::{Color, Modifier, Style, Stylize},
     widgets,
     widgets::{Cell, Row},
@@ -12,19 +13,27 @@ pub struct Table<'a> {
     pub state: &'a TableState,
 }
 
-impl<'a> Table<'a> {
-    pub fn into_widget(self) -> widgets::Table<'static> {
-        widgets::Table::new(self.rows(), self.constraints())
+impl<'a> Widget for Table<'a> {
+    fn render(self, area: Rect, buffer: &mut Buffer) {
+        let table = widgets::Table::new(self.rows(), self.constraints())
             .header(self.header())
             .block(self.block())
-            .row_highlight_style(Style::default().reversed())
             .row_highlight_style(if self.state.is_focused {
                 Style::default().bg(Color::Yellow).fg(Color::White)
             } else {
                 Style::default()
-            })
-    }
+            });
 
+        <widgets::Table as StatefulWidget>::render(
+            table,
+            area,
+            buffer,
+            &mut self.state.ui,
+        );
+    }
+}
+
+impl<'a> Table<'a> {
     fn block(&self) -> widgets::Block<'static> {
         Block {
             title: self.state.title().clone(),

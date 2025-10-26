@@ -9,7 +9,6 @@ use ratatui::{
     DefaultTerminal, Frame,
     layout::{Alignment, Constraint, Direction, Flex, Layout, Rect},
     style::{Color, Style},
-    widgets,
     widgets::Paragraph,
 };
 use std::rc::Rc;
@@ -88,10 +87,8 @@ impl App {
         area: Rect,
         state: &crate::states::TableState,
     ) {
-        let table = Table { state }.into_widget();
-        let mut widget_state = widgets::TableState::default();
-        widget_state.select(state.selected_row);
-        frame.render_stateful_widget(table, area, &mut widget_state);
+        let table = Table { state };
+        frame.render_stateful_widget(table, area, &mut state.ui);
     }
 
     fn popup_area(&self, area: Rect) -> Rect {
