@@ -1,6 +1,6 @@
 use crate::actions::{self, StartApp};
 use crate::selectors::KeyBindingsSelector;
-use crate::states::{AppState, TextInput};
+use crate::states::AppState;
 use crate::task_repo::{TaskFileRepository, TaskRepository};
 use crate::widgets::{Table, TextField};
 use color_eyre::Result;
@@ -8,6 +8,7 @@ use crossterm::event::{self, Event, KeyEvent, KeyEventKind};
 use ratatui::{
     DefaultTerminal, Frame,
     layout::{Alignment, Constraint, Direction, Flex, Layout, Rect},
+    prelude::*,
     style::{Color, Style},
     widgets::Paragraph,
 };
@@ -53,12 +54,14 @@ impl App {
             let area = self.popup_area(frame.area());
             let text_field = TextField {
                 title: modal.title(),
-                text: TextInput {
-                    value: "Cleanup old todo list, foo bar baz old todo list baz baz".to_string(),
-                    _cursor: 0
-                }
+                text: &modal.text,
             };
             frame.render_widget(text_field, area);
+
+            frame.set_cursor_position(Position::new(
+                area.x + modal.text.cursor as u16 + 2,
+                area.y + 1,
+            ));
         }
 
         let keybindings = self.state.select(KeyBindingsSelector).join(" | ");

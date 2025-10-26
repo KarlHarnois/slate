@@ -1,5 +1,5 @@
 use crate::actions::Action;
-use crate::states::{AppState, ModalState, ModalType};
+use crate::states::{AppState, ModalState, ModalType, TextInput};
 
 pub struct ShowNewTaskModal;
 pub struct ShowNewProjectModal;
@@ -12,6 +12,7 @@ impl Action for ShowNewTaskModal {
 
         state.modal = Some(ModalState {
             modal_type: ModalType::NewTask,
+            text: TextInput::new(),
         });
     }
 }
@@ -23,6 +24,7 @@ impl Action for ShowNewProjectModal {
 
         state.modal = Some(ModalState {
             modal_type: ModalType::NewProject,
+            text: TextInput::new(),
         });
     }
 }

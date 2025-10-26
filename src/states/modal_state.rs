@@ -1,3 +1,5 @@
+use crate::states::TextInput;
+
 #[derive(Debug)]
 pub enum ModalType {
     NewTask,
@@ -7,6 +9,7 @@ pub enum ModalType {
 #[derive(Debug)]
 pub struct ModalState {
     pub modal_type: ModalType,
+    pub text: TextInput,
 }
 
 impl ModalState {

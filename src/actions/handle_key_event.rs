@@ -1,5 +1,6 @@
 use crate::actions::{
-    Action, ActionFactory, FocusNextTable, MoveDownInTable, MoveUpInTable,
+    Action, ActionFactory, DeleteChar, FocusNextTable, InsertChar,
+    MoveDownInTable, MoveLeftInTextField, MoveRightInTextField, MoveUpInTable,
     NoOp, ToggleTaskStatus,
     modals::{CancelModal, ShowNewProjectModal, ShowNewTaskModal},
     quit_app::QuitApp,
@@ -8,7 +9,7 @@ use crate::actions::{
 use crate::states::AppState;
 
 use crossterm::event::{
-    KeyCode::{BackTab, Char, Down, Esc, Tab, Up},
+    KeyCode::{BackTab, Backspace, Char, Down, Esc, Left, Right, Tab, Up},
     KeyEvent, KeyModifiers,
 };
 
@@ -43,6 +44,10 @@ impl HandleKeyEvent {
     fn modal_actions(&self) -> Box<dyn Action> {
         match (self.key.modifiers, self.key.code) {
             (_, Esc) => Box::new(CancelModal),
+            (_, Char(char)) => Box::new(InsertChar { char }),
+            (_, Backspace) => Box::new(DeleteChar),
+            (_, Left) => Box::new(MoveLeftInTextField),
+            (_, Right) => Box::new(MoveRightInTextField),
             _ => Box::new(NoOp),
         }
     }

@@ -8,6 +8,7 @@ pub mod quit_app;
 pub mod select_project;
 pub mod start_app;
 pub mod table_movements;
+pub mod text_field;
 pub mod toggle_task_status;
 pub mod update_projects;
 
@@ -18,5 +19,8 @@ pub use handle_key_event::HandleKeyEvent;
 pub use noop::NoOp;
 pub use start_app::StartApp;
 pub use table_movements::{MoveDownInTable, MoveUpInTable};
+pub use text_field::{
+    DeleteChar, InsertChar, MoveLeftInTextField, MoveRightInTextField,
+};
 pub use toggle_task_status::ToggleTaskStatus;
 pub use update_projects::UpdateProjects;
